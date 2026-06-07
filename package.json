@@ -1,0 +1,25 @@
+{
+  "name": "giftblox-discord-bot",
+  "version": "1.0.0",
+  "description": "Bot Discord de fidélité avec système de points et échange de codes cadeaux Roblox",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "deploy-commands": "node deploy-commands.js"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "loyalty",
+    "points",
+    "roblox"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "sqlite3": "^5.1.7",
+    "dotenv": "^16.4.1"
+  }
+}
