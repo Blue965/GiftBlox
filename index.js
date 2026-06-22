@@ -16,9 +16,8 @@ const client = new Client({
   ],
 });
 
-// Collections pour stocker les commandes et événements
+// Collection pour stocker les commandes (events ne sont pas stockés pour économiser la mémoire)
 client.commands = new Collection();
-client.events = new Collection();
 
 /**
  * Charge toutes les commandes Slash depuis le dossier /commands
@@ -31,7 +30,7 @@ async function loadCommands() {
     const filePath = join(commandsPath, file);
     const fileURL = pathToFileURL(filePath).href;
     const command = await import(fileURL);
-    
+
     if ('data' in command.default && 'execute' in command.default) {
       client.commands.set(command.default.data.name, command.default);
       console.log(`✅ Commande chargée : ${command.default.data.name}`);
@@ -39,6 +38,9 @@ async function loadCommands() {
       console.log(`⚠️ La commande ${file} manque les propriétés "data" ou "execute"`);
     }
   }
+
+  // Libérer la mémoire après le chargement des commandes
+  commandFiles.length = 0;
 }
 
 /**
@@ -52,7 +54,7 @@ async function loadEvents() {
     const filePath = join(eventsPath, file);
     const fileURL = pathToFileURL(filePath).href;
     const event = await import(fileURL);
-    
+
     if (event.default.name && event.default.execute) {
       if (event.default.name === 'ready') {
         client.once(event.default.name, (...args) => event.default.execute(...args));
@@ -64,6 +66,9 @@ async function loadEvents() {
       console.log(`⚠️ L'événement ${file} manque les propriétés "name" ou "execute"`);
     }
   }
+
+  // Libérer la mémoire après le chargement des événements
+  eventFiles.length = 0;
 }
 
 /**
@@ -93,37 +98,6 @@ async function registerCommands() {
   }
 }
 
-/**
- * Gestionnaire d'interaction pour les commandes Slash
- */
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return;
-
-  const command = client.commands.get(interaction.commandName);
-
-  if (!command) {
-    console.error(`❌ Commande ${interaction.commandName} non trouvée`);
-    return;
-  }
-
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(`❌ Erreur lors de l'exécution de la commande ${interaction.commandName}:`, error);
-    
-    const errorEmbed = {
-      color: 0xff0000,
-      title: '❌ Erreur',
-      description: 'Une erreur est survenue lors de l\'exécution de cette commande.',
-    };
-
-    if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
-    } else {
-      await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-    }
-  }
-});
 
 /**
  * Événement ready : le bot est connecté et prêt
@@ -144,3 +118,10 @@ await loadEvents();
 
 // Connexion du bot à Discord
 client.login(process.env.DISCORD_TOKEN);
+
+// Démarrer le serveur API pour le site web
+import('./api.js').then(() => {
+    console.log('🌐 Serveur web API démarré');
+}).catch(err => {
+    console.error('Erreur lors du démarrage du serveur API:', err);
+});

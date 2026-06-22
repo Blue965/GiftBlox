@@ -270,14 +270,40 @@
             alert(`Tâche ${taskId} complétée !\n\nLe système vérifiera automatiquement votre progression.`);
         }
 
-        // Charger les statistiques utilisateur
-        function loadUserStats() {
-            // Les statistiques seront chargées depuis l'API du bot
-            // Pour l'instant, afficher des tirets
-            document.getElementById('userPoints').textContent = '-';
-            document.getElementById('userLevel').textContent = '-';
-            document.getElementById('userTasks').textContent = '-';
-            document.getElementById('userXP').textContent = '-';
+        // Charger les statistiques utilisateur depuis l'API du bot
+        async function loadUserStats() {
+            try {
+                const user = JSON.parse(localStorage.getItem('discord_user'));
+                if (!user || !user.id) {
+                    console.error('Utilisateur non connecté');
+                    return;
+                }
+
+                // Appeler l'API du bot
+                const response = await fetch(`http://localhost:3001/api/user/${user.id}`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    document.getElementById('userPoints').textContent = result.data.points;
+                    document.getElementById('userLevel').textContent = result.data.level;
+                    document.getElementById('userTasks').textContent = result.data.tasksCompleted;
+                    document.getElementById('userXP').textContent = result.data.xp;
+                } else {
+                    console.error('Erreur lors de la récupération des données:', result.error);
+                    // Afficher des tirets en cas d'erreur
+                    document.getElementById('userPoints').textContent = '-';
+                    document.getElementById('userLevel').textContent = '-';
+                    document.getElementById('userTasks').textContent = '-';
+                    document.getElementById('userXP').textContent = '-';
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des statistiques:', error);
+                // Afficher des tirets en cas d'erreur
+                document.getElementById('userPoints').textContent = '-';
+                document.getElementById('userLevel').textContent = '-';
+                document.getElementById('userTasks').textContent = '-';
+                document.getElementById('userXP').textContent = '-';
+            }
         }
 
         // Initialisation
