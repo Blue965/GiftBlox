@@ -1,7 +1,11 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const { getOrCreateUser, getActiveTasks, getQuery, allQuery } = require('./database/database.js');
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { getOrCreateUser, getActiveTasks, getQuery, allQuery } from './database/database.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.API_PORT || 3001;
@@ -83,5 +87,3 @@ app.listen(PORT, () => {
     console.log(`🚀 Serveur API démarré sur le port ${PORT}`);
     console.log(`🌐 Site web disponible sur http://localhost:${PORT}`);
 });
-
-export default app;
