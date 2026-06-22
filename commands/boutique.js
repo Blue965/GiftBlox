@@ -1,8 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { countAvailableCodesByValue, getAvailableRobuxValues } from '../database/database.js';
-
-// Taux de conversion : 1 Robux = 10 points
-const POINTS_PER_ROBUX = 10;
+import { countAvailableCodesByValue, getAvailableGiftTypes } from '../database/database.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -10,18 +7,19 @@ export default {
     .setDescription('Affiche la boutique des récompenses disponibles'),
 
   async execute(interaction) {
-    // Récupérer les valeurs disponibles et leur stock
-    const availableValues = await getAvailableRobuxValues();
+    // Récupérer les types et valeurs disponibles avec leur stock
+    const availableGifts = await getAvailableGiftTypes();
     const stockCounts = await countAvailableCodesByValue();
 
-    // Créer un map pour compter le stock par valeur
+    // Créer un map pour compter le stock par type et valeur
     const stockMap = new Map();
     stockCounts.forEach(item => {
-      stockMap.set(item.robux_value, item.count);
+      const key = `${item.gift_type}-${item.gift_value}`;
+      stockMap.set(key, item.count);
     });
 
     // Si aucun code n'est disponible
-    if (availableValues.length === 0) {
+    if (availableGifts.length === 0) {
       const noStockEmbed = new EmbedBuilder()
         .setColor(0xff0000)
         .setTitle('🏪 Boutique')
@@ -33,11 +31,13 @@ export default {
     }
 
     // Construire la liste des récompenses
-    const rewardsList = availableValues
-      .map(robuxValue => {
-        const pointsCost = robuxValue * POINTS_PER_ROBUX;
-        const stock = stockMap.get(robuxValue) || 0;
-        return `🎁 **Carte ${robuxValue} Robux** - Coût : **${pointsCost} points**\n   └ Stock disponible : **${stock}**`;
+    const rewardsList = availableGifts
+      .map(gift => {
+        const key = `${gift.giftType}-${gift.giftValue}`;
+        const stock = stockMap.get(key) || 0;
+        const typeEmoji = gift.giftType === 'robux' ? '💎' : gift.giftType === 'nitro' ? '🎮' : '🎁';
+        const typeLabel = gift.giftType === 'robux' ? 'Robux' : gift.giftType === 'nitro' ? 'Nitro' : gift.giftType.charAt(0).toUpperCase() + gift.giftType.slice(1);
+        return `${typeEmoji} **${typeLabel} - ${gift.giftValue}** - Coût : **${gift.pointsCost} points**\n   └ Stock disponible : **${stock}**`;
       })
       .join('\n\n');
 
@@ -45,7 +45,7 @@ export default {
     const shopEmbed = new EmbedBuilder()
       .setColor(0x00ff00)
       .setTitle('🏪 Boutique des Récompenses')
-      .setDescription('Échangez vos points contre des codes cadeaux Roblox !')
+      .setDescription('Échangez vos points contre des codes cadeaux !')
       .addFields(
         {
           name: '📦 Récompenses disponibles',
@@ -53,7 +53,7 @@ export default {
         },
         {
           name: '💡 Information',
-          value: `Taux de conversion : **1 Robux = ${POINTS_PER_ROBUX} points**\nUtilisez la commande \`/acheter-carte\` pour effectuer un achat.`,
+          value: 'Utilisez la commande `/acheter-carte` pour effectuer un achat.',
           inline: false,
         },
       )

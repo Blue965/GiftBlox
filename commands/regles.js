@@ -12,59 +12,84 @@ export default {
       .setDescription('Informations importantes sur le fonctionnement du système de fidélité')
       .addFields(
         {
-          name: '🎯 Comment ça marche ?',
+          name: '🎯 Comment gagner des points ?',
           value:
-            '1. Gagnez des points en envoyant des messages (1 point + 15-25 XP par message)\n' +
-            '2. Utilisez `/boutique` pour voir les récompenses disponibles\n' +
-            '3. Achetez une carte cadeau avec vos points via `/acheter-carte`\n' +
-            '4. Recevez le code par message privé et activez-le sur roblox.com/redeem',
+            '• Envoyez des messages dans le serveur (1 point + 15-25 XP par message)\n' +
+            '• Complétez des tâches disponibles (réseaux sociaux, invitations, etc.)\n' +
+            '• Cooldown de 60 secondes entre chaque message\n' +
+            '• Montez de niveau pour débloquer plus de récompenses',
           inline: false,
         },
         {
-          name: '⚠️ AVERTISSEMENT IMPORTANT',
+          name: '📋 Système de tâches',
           value:
-            '**La validité des codes cadeaux dépend entièrement de l\'administrateur du serveur.**\n\n' +
-            'Ce bot est un outil de distribution de codes. L\'administrateur DOIT :\n' +
-            '• Acheter réellement les cartes cadeaux Roblox\n' +
-            '• Ajouter des codes valides et non utilisés\n' +
-            '• Ne pas réutiliser les codes déjà distribués\n\n' +
-            'Si l\'administrateur ne respecte pas ces règles, les codes fournis pourraient être invalides.',
+            '• Utilisez `/taches` pour voir les tâches disponibles\n' +
+            '• Utilisez `/completer-tache` pour soumettre une tâche complétée\n' +
+            '• Le staff valide chaque tâche manuellement\n' +
+            '• Les points sont ajoutés après validation\n' +
+            '• Chaque tâche ne peut être complétée qu\'une seule fois',
           inline: false,
         },
         {
-          name: '💰 Taux de conversion',
-          value: '1 Robux = 10 points',
-          inline: true,
-        },
-        {
-          name: '⏱️ Cooldown',
-          value: '60 secondes entre chaque message pour gagner des points',
-          inline: true,
-        },
-        {
-          name: '🔒 Sécurité',
+          name: '💰 Système de paiement sécurisé',
           value:
-            'Ce bot n\'utilise AUCUNE API Roblox ni aucun cookie. Les codes sont stockés localement dans une base de données sécurisée.',
+            '**Nouveau système : Click-to-Approve**\n\n' +
+            '1. Utilisez `/claim` pour demander un paiement (Robux, Nitro, etc.)\n' +
+            '2. Indiquez votre pseudo Roblox et la valeur souhaitée\n' +
+            '3. Vos points sont déduits immédiatement (anti-fraude)\n' +
+            '4. Votre demande est envoyée au staff pour validation\n' +
+            '5. Le staff valide manuellement sur Roblox (One-time Payout)\n' +
+            '6. Vous recevez une notification quand le paiement est effectué',
           inline: false,
         },
         {
-          name: '📧 Messages privés',
+          name: '� Pourquoi ce système est sécurisé ?',
           value:
-            'Pour recevoir votre code cadeau, vous devez activer vos messages privés. Si vos DMs sont désactivés, l\'achat échouera et vos points ne seront pas déduits.',
+            '• **Aucun mot de passe Roblox** n\'est stocké dans le bot\n' +
+            '• **Pas d\'automatisation** : le staff confirme chaque paiement manuellement\n' +
+            '• **Respect des règles Roblox** : aucun script tiers ne se connecte à leurs serveurs\n' +
+            '• **Anti-fraude** : les points sont déduits avant validation\n' +
+            '• **Remboursement automatique** si le staff annule la demande',
           inline: false,
         },
         {
-          name: '🛡️ Protection',
+          name: '� Boutique de récompenses',
           value:
-            '• Transaction sécurisée : les points ne sont déduits que si le DM est envoyé avec succès\n' +
-            '• Code caché dans le DM pour éviter le vol\n' +
-            '• Stock en temps réel dans la boutique',
+            '• Utilisez `/boutique` pour voir les récompenses disponibles\n' +
+            '• Différents types : Robux, Nitro, et autres cadeaux\n' +
+            '• Chaque récompense a un coût en points spécifique\n' +
+            '• Stock mis à jour en temps réel',
+          inline: false,
+        },
+        {
+          name: '⚠️ Règles importantes',
+          value:
+            '• **Pas de spam** : respectez le cooldown de 60 secondes\n' +
+            '• **Pseudo Roblox correct** : assurez-vous que votre pseudo est exact\n' +
+            '• **Une demande à la fois** : attendez la validation avant de faire une nouvelle demande\n' +
+            '• **DMs activés** : activez vos messages privés pour recevoir les notifications',
+          inline: false,
+        },
+        {
+          name: '🛡️ Protection et sécurité',
+          value:
+            '• Base de données locale sécurisée\n' +
+            '• Aucune API Roblox ni cookie stocké\n' +
+            '• Validation manuelle par le staff\n' +
+            '• Remboursement automatique en cas d\'annulation',
+          inline: false,
+        },
+        {
+          name: '📧 Support',
+          value:
+            'En cas de problème avec un paiement ou une demande, contactez le staff du serveur.\n\n' +
+            '⚠️ **Note** : La validité des paiements dépend entièrement de l\'administrateur qui effectue les virements sur Roblox.',
           inline: false,
         },
       )
       .setTimestamp()
       .setFooter({
-        text: 'En cas de problème avec un code, contactez l\'administrateur du serveur',
+        text: 'GiftBlox - Système de fidélité sécurisé',
       });
 
     await interaction.reply({ embeds: [rulesEmbed] });

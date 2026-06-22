@@ -1,33 +1,52 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { getOrCreateUser, purchaseGiftCode, getAvailableGiftCode } from '../database/database.js';
-
-// Taux de conversion : 1 Robux = 10 points
-const POINTS_PER_ROBUX = 10;
+import { getOrCreateUser, purchaseGiftCode, getAvailableGiftCode, getAvailableGiftTypes } from '../database/database.js';
 
 export default {
   data: new SlashCommandBuilder()
     .setName('acheter-carte')
-    .setDescription('Achète une carte cadeau Roblox avec vos points')
-    .addIntegerOption(option =>
+    .setDescription('Achète une carte cadeau avec vos points')
+    .addStringOption(option =>
       option
-        .setName('valeur_robux')
-        .setDescription('La valeur en Robux de la carte souhaitée')
+        .setName('type')
+        .setDescription('Le type de cadeau')
         .setRequired(true)
         .addChoices(
-          { name: '100 Robux', value: 100 },
-          { name: '200 Robux', value: 200 },
-          { name: '400 Robux', value: 400 },
-          { name: '800 Robux', value: 800 },
-          { name: '1000 Robux', value: 1000 },
-          { name: '1600 Robux', value: 1600 },
-          { name: '2000 Robux', value: 2000 },
-          { name: '4500 Robux', value: 4500 },
+          { name: '💎 Robux', value: 'robux' },
+          { name: '🎮 Nitro', value: 'nitro' },
+          { name: '🎁 Autre', value: 'autre' },
         ),
+    )
+    .addIntegerOption(option =>
+      option
+        .setName('valeur')
+        .setDescription('La valeur du cadeau')
+        .setRequired(true)
+        .setMinValue(1),
     ),
 
   async execute(interaction) {
-    const robuxValue = interaction.options.getInteger('valeur_robux');
-    const pointsCost = robuxValue * POINTS_PER_ROBUX;
+    const giftType = interaction.options.getString('type');
+    const giftValue = interaction.options.getInteger('valeur');
+
+    // Récupérer les cadeaux disponibles pour obtenir le coût en points
+    const availableGifts = await getAvailableGiftTypes();
+    const selectedGift = availableGifts.find(g => g.giftType === giftType && g.giftValue === giftValue);
+
+    if (!selectedGift) {
+      const notAvailableEmbed = new EmbedBuilder()
+        .setColor(0xff0000)
+        .setTitle('❌ Cadeau non disponible')
+        .setDescription(
+          `Désolé, ce cadeau n'est pas disponible.\n\n` +
+          `Veuillez vérifier la boutique avec \`/boutique\` pour voir les disponibilités actuelles.`,
+        )
+        .setTimestamp();
+
+      await interaction.reply({ embeds: [notAvailableEmbed], ephemeral: true });
+      return;
+    }
+
+    const pointsCost = selectedGift.pointsCost;
 
     // Récupérer l'utilisateur
     const user = await getOrCreateUser(interaction.user.id);
@@ -38,7 +57,7 @@ export default {
         .setColor(0xff0000)
         .setTitle('❌ Solde insuffisant')
         .setDescription(
-          `Vous n'avez pas assez de points pour acheter cette carte.\n\n` +
+          `Vous n'avez pas assez de points pour acheter ce cadeau.\n\n` +
           `💰 Solde actuel : **${user.points} points**\n` +
           `💵 Coût : **${pointsCost} points**\n` +
           `❌ Manquant : **${pointsCost - user.points} points**`,
@@ -50,13 +69,13 @@ export default {
     }
 
     // Vérifier si un code est disponible
-    const availableCode = await getAvailableGiftCode(robuxValue);
+    const availableCode = await getAvailableGiftCode(giftType, giftValue);
     if (!availableCode) {
       const outOfStockEmbed = new EmbedBuilder()
         .setColor(0xff0000)
         .setTitle('❌ Rupture de stock')
         .setDescription(
-          `Désolé, il n'y a plus de cartes de **${robuxValue} Robux** disponibles.\n\n` +
+          `Désolé, il n'y a plus de cadeaux de ce type disponibles.\n\n` +
           `Veuillez vérifier la boutique avec \`/boutique\` pour voir les disponibilités actuelles.`,
         )
         .setTimestamp();
@@ -67,12 +86,15 @@ export default {
 
     // Essayer d'envoyer le code par DM
     try {
+      const typeLabel = giftType === 'robux' ? 'Robux' : giftType === 'nitro' ? 'Nitro' : giftType.charAt(0).toUpperCase() + giftType.slice(1);
+      const typeEmoji = giftType === 'robux' ? '💎' : giftType === 'nitro' ? '🎮' : '🎁';
+
       const dmEmbed = new EmbedBuilder()
         .setColor(0x00ff00)
-        .setTitle('🎁 Votre carte cadeau Roblox')
+        .setTitle(`🎁 Votre cadeau ${typeLabel}`)
         .setDescription(
           `Merci pour votre achat !\n\n` +
-          `Voici votre code cadeau de **${robuxValue} Robux** :`,
+          `Voici votre code cadeau de **${typeLabel} - ${giftValue}** :`,
         )
         .addFields(
           {
@@ -87,7 +109,7 @@ export default {
           },
           {
             name: '📊 Valeur',
-            value: `**${robuxValue} Robux**`,
+            value: `**${typeLabel} - ${giftValue}**`,
             inline: true,
           },
         )
@@ -97,7 +119,7 @@ export default {
       await interaction.user.send({ embeds: [dmEmbed] });
 
       // Si le DM est envoyé avec succès, procéder à la transaction ACID
-      const purchasedCode = await purchaseGiftCode(interaction.user.id, robuxValue, pointsCost);
+      const purchasedCode = await purchaseGiftCode(interaction.user.id, giftType, giftValue, pointsCost);
 
       if (purchasedCode) {
         const successEmbed = new EmbedBuilder()
@@ -105,7 +127,7 @@ export default {
           .setTitle('✅ Achat réussi !')
           .setDescription(
             `Votre achat a été effectué avec succès !\n\n` +
-            `🎁 Carte : **${robuxValue} Robux**\n` +
+            `${typeEmoji} Cadeau : **${typeLabel} - ${giftValue}**\n` +
             `💵 Coût : **${pointsCost} points**\n` +
             `💰 Nouveau solde : **${user.points - pointsCost} points**\n\n` +
             `Le code vous a été envoyé par message privé.`,

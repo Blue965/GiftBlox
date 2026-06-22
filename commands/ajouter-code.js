@@ -11,21 +11,30 @@ export default {
         .setDescription('Le code du cadeau à ajouter')
         .setRequired(true),
     )
-    .addIntegerOption(option =>
+    .addStringOption(option =>
       option
-        .setName('valeur_robux')
-        .setDescription('La valeur en Robux du code')
+        .setName('type')
+        .setDescription('Le type de cadeau')
         .setRequired(true)
         .addChoices(
-          { name: '100 Robux', value: 100 },
-          { name: '200 Robux', value: 200 },
-          { name: '400 Robux', value: 400 },
-          { name: '800 Robux', value: 800 },
-          { name: '1000 Robux', value: 1000 },
-          { name: '1600 Robux', value: 1600 },
-          { name: '2000 Robux', value: 2000 },
-          { name: '4500 Robux', value: 4500 },
+          { name: '💎 Robux', value: 'robux' },
+          { name: '🎮 Nitro', value: 'nitro' },
+          { name: '🎁 Autre', value: 'autre' },
         ),
+    )
+    .addIntegerOption(option =>
+      option
+        .setName('valeur')
+        .setDescription('La valeur du cadeau')
+        .setRequired(true)
+        .setMinValue(1),
+    )
+    .addIntegerOption(option =>
+      option
+        .setName('cout_points')
+        .setDescription('Le coût en points')
+        .setRequired(true)
+        .setMinValue(1),
     )
     .setDefaultMemberPermissions(0), // Désactive les permissions par défaut pour cacher la commande aux membres
 
@@ -43,11 +52,15 @@ export default {
     }
 
     const code = interaction.options.getString('code');
-    const robuxValue = interaction.options.getInteger('valeur_robux');
+    const giftType = interaction.options.getString('type');
+    const giftValue = interaction.options.getInteger('valeur');
+    const pointsCost = interaction.options.getInteger('cout_points');
 
     // Ajouter le code à la base de données
     try {
-      const addedCode = await addGiftCode(code, robuxValue);
+      const addedCode = await addGiftCode(code, giftType, giftValue, pointsCost);
+
+      const typeLabel = giftType === 'robux' ? 'Robux' : giftType === 'nitro' ? 'Nitro' : giftType.charAt(0).toUpperCase() + giftType.slice(1);
 
       const successEmbed = new EmbedBuilder()
         .setColor(0x00ff00)
@@ -55,7 +68,9 @@ export default {
         .setDescription(
           `Le code cadeau a été ajouté à la boutique.\n\n` +
           `🔐 Code : ||${addedCode.code}||\n` +
-          `📊 Valeur : **${robuxValue} Robux**\n` +
+          `🎁 Type : **${typeLabel}**\n` +
+          `📊 Valeur : **${giftValue}**\n` +
+          `💰 Coût en points : **${pointsCost}**\n` +
           `🆔 ID : **${addedCode.id}**\n` +
           `📈 Statut : **${addedCode.status}**`,
         )

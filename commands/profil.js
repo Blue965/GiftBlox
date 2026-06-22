@@ -4,16 +4,23 @@ import { getOrCreateUser } from '../database/database.js';
 export default {
   data: new SlashCommandBuilder()
     .setName('profil')
-    .setDescription('Affiche votre profil avec votre niveau, XP et points'),
+    .setDescription('Affiche le profil avec le niveau, XP et points')
+    .addUserOption(option =>
+      option
+        .setName('utilisateur')
+        .setDescription('L\'utilisateur dont vous voulez voir le profil (optionnel)')
+        .setRequired(false)
+    ),
 
   async execute(interaction) {
-    // Récupérer ou créer l'utilisateur
-    const user = await getOrCreateUser(interaction.user.id);
+    // Récupérer l'utilisateur ciblé ou soi-même
+    const targetUser = interaction.options.getUser('utilisateur') || interaction.user;
+    const userData = await getOrCreateUser(targetUser.id);
 
     // Calculer l'XP nécessaire pour le niveau actuel et le suivant
-    const xpForCurrentLevel = (user.level - 1) * 120;
-    const xpForNextLevel = user.level * 120;
-    const xpProgress = user.xp - xpForCurrentLevel;
+    const xpForCurrentLevel = (userData.level - 1) * 120;
+    const xpForNextLevel = userData.level * 120;
+    const xpProgress = userData.xp - xpForCurrentLevel;
     const xpNeeded = xpForNextLevel - xpForCurrentLevel;
     const progressPercentage = Math.min(100, Math.max(0, (xpProgress / xpNeeded) * 100));
 
@@ -26,22 +33,22 @@ export default {
     // Créer l'embed du profil
     const profileEmbed = new EmbedBuilder()
       .setColor(0x5865F2)
-      .setTitle(`👤 Profil de ${interaction.user.username}`)
-      .setThumbnail(interaction.user.displayAvatarURL({ size: 256 }))
+      .setTitle(`👤 Profil de ${targetUser.username}`)
+      .setThumbnail(targetUser.displayAvatarURL({ size: 256 }))
       .addFields(
         {
           name: '📊 Niveau',
-          value: `**${user.level}**`,
+          value: `**${userData.level}**`,
           inline: true,
         },
         {
           name: '💰 Points',
-          value: `**${user.points}**`,
+          value: `**${userData.points}**`,
           inline: true,
         },
         {
           name: '⭐ XP',
-          value: `**${user.xp}** / ${xpForNextLevel}`,
+          value: `**${userData.xp}** / ${xpForNextLevel}`,
           inline: false,
         },
         {
