@@ -1,226 +1,173 @@
-# GiftBlox - Bot Discord de Fidélité
+# GiftBlox Web Interface
 
-Bot Discord moderne et sécurisé permettant aux utilisateurs de cumuler des points via leur activité textuelle et de les échanger contre des codes cadeaux Roblox pré-remplis par l'administrateur.
+Interface web moderne pour le bot Discord GiftBlox avec système de connexion Discord OAuth2.
 
-## ⚠️ Sécurité et Conformité
+## Fonctionnalités
 
-Ce bot **N'UTILISE AUCUNE API Roblox** officielle ou non officielle, ni aucun cookie (.ROBLOSECURITY). Les codes cadeaux sont gérés manuellement par l'administrateur et stockés dans une base de données locale SQLite.
+- 🎨 Design moderne et responsive avec Tailwind CSS
+- 🔐 Connexion Discord OAuth2 sécurisée
+- 📊 Tableau de bord utilisateur avec statistiques
+- 📋 Système de tâches interactif
+- 🎯 Animations fluides et interface intuitive
+- 📱 Compatible mobile et desktop
 
-## 📋 Fonctionnalités
+## Installation
 
-### Système d'XP et de Points
-- **Gain automatique** : Chaque message attribue 1 point et 15-25 XP
-- **Cooldown anti-spam** : 60 secondes par utilisateur
-- **Système de niveaux** : XP nécessaire = niveau × 120
-- **Notifications de level-up** : Messages stylés lors des montées de niveau
+### 1. Configuration Discord OAuth2
 
-### Commandes Slash
+1. Allez sur [Discord Developer Portal](https://discord.com/developers/applications)
+2. Créez une nouvelle application ou utilisez une existante
+3. Allez dans l'onglet "OAuth2" > "General"
+4. Ajoutez un redirect URI : `http://localhost:3000/callback.html` (ou votre domaine)
+5. Cochez les scopes : `identify`, `guilds.join`, `guilds`
+6. Copiez votre `Client ID`
 
-#### `/profil` (Publique)
-Affiche votre profil personnel avec :
-- Niveau actuel
-- Barre de progression d'XP
-- Solde de points
+### 2. Configuration du fichier
 
-#### `/boutique` (Publique)
-Affiche la liste des récompenses disponibles avec :
-- Valeur en Robux de chaque carte
-- Coût en points
-- Stock disponible en temps réel
+Ouvrez `script.js` et remplacez `YOUR_DISCORD_CLIENT_ID` par votre Client ID Discord :
 
-#### `/acheter-carte [valeur_robux]` (Publique)
-Achète une carte cadeau avec vos points :
-- Taux de conversion : 1 Robux = 10 points
-- Transaction ACID sécurisée
-- Envoi du code par message privé (DM)
-- Gestion d'erreur si les DMs sont désactivés
-
-#### `/regles` (Publique)
-Affiche les règles et avertissements importants :
-- Explication du fonctionnement du système
-- Avertissement sur la validité des codes
-- Informations de sécurité et protection
-
-#### `/ajouter-code [code] [valeur_robux]` (Owner uniquement)
-Ajoute un nouveau code cadeau à la boutique :
-- Réservé au propriétaire du bot
-- Statut automatique : 'available'
-- Confirmation invisible aux autres membres
-
-## 🏗️ Architecture du Projet
-
-```
-GiftBlox/
-├── commands/           # Commandes Slash
-│   ├── profil.js
-│   ├── boutique.js
-│   ├── acheter-carte.js
-│   ├── regles.js
-│   └── ajouter-code.js
-├── events/            # Gestionnaires d'événements
-│   └── messageCreate.js
-├── database/          # Module de base de données
-│   └── database.js
-├── package.json
-├── .env.example
-├── .env               # À créer (non inclus dans git)
-├── index.js           # Point d'entrée principal
-└── README.md
-```
-
-## 🗄️ Base de Données
-
-Le bot utilise **better-sqlite3** avec deux tables :
-
-### Table `users`
-- `discord_id` (TEXT, PRIMARY KEY) : ID Discord de l'utilisateur
-- `points` (INTEGER, DEFAULT 0) : Solde de points
-- `xp` (INTEGER, DEFAULT 0) : XP accumulée
-- `level` (INTEGER, DEFAULT 1) : Niveau actuel
-
-### Table `giftcodes`
-- `id` (INTEGER, PRIMARY KEY AUTOINCREMENT) : ID unique du code
-- `code` (TEXT, UNIQUE) : Le code cadeau
-- `robux_value` (INTEGER) : Valeur en Robux
-- `status` (TEXT, DEFAULT 'available') : Statut ('available' ou 'used')
-
-## 🚀 Installation
-
-### Prérequis
-- Node.js 18.x ou supérieur
-- npm ou yarn
-
-### Étapes d'installation
-
-1. **Cloner ou télécharger le projet**
-   ```bash
-   cd GiftBlox
-   ```
-
-2. **Installer les dépendances**
-   ```bash
-   npm install
-   ```
-
-3. **Créer le fichier `.env`**
-   ```bash
-   cp .env.example .env
-   ```
-
-4. **Configurer les variables d'environnement**
-   Ouvrez le fichier `.env` et remplacez les valeurs :
-   ```
-   DISCORD_TOKEN=votre_token_discord_ici
-   OWNER_ID=votre_id_discord_ici
-   ```
-
-   **Pour obtenir votre Discord Token :**
-   - Allez sur [Discord Developer Portal](https://discord.com/developers/applications)
-   - Créez une application
-   - Allez dans "Bot" → "Reset Token" pour générer un token
-   - Copiez le token
-
-   **Pour obtenir votre Owner ID :**
-   - Activez le mode développeur dans Discord
-   - Clic droit sur votre profil → "Copier l'ID"
-
-5. **Inviter le bot sur votre serveur**
-   - Allez sur [Discord Developer Portal](https://discord.com/developers/applications)
-   - Sélectionnez votre application
-   - Allez dans "OAuth2" → "URL Generator"
-   - Cochez les scopes : `bot` et `applications.commands`
-   - Cochez les permissions : `Send Messages`, `Read Messages/View Channels`, `Read Message History`
-   - Copiez l'URL générée et ouvrez-la dans votre navigateur
-
-6. **Démarrer le bot**
-   ```bash
-   npm start
-   ```
-
-## 🎮 Utilisation
-
-### Pour les utilisateurs
-
-1. **Gagner des points** : Envoyez des messages dans le serveur
-   - 1 point par message
-   - 15-25 XP par message
-   - Cooldown de 60 secondes
-
-2. **Voir votre profil** : Utilisez `/profil`
-
-3. **Voir la boutique** : Utilisez `/boutique`
-
-4. **Consulter les règles** : Utilisez `/regles` pour voir les avertissements importants
-
-5. **Acheter une carte** : Utilisez `/acheter-carte [valeur]`
-   - Assurez-vous d'avoir assez de points
-   - Activez vos messages privés pour recevoir le code
-
-### Pour l'administrateur
-
-1. **Ajouter des codes** : Utilisez `/ajouter-code [code] [valeur]`
-   - Seul le propriétaire peut utiliser cette commande
-   - Les codes sont automatiquement marqués comme disponibles
-
-## 🔒 Sécurité
-
-- **Pas d'API Roblox** : Aucune connexion aux serveurs Roblox
-- **Base de données locale** : SQLite stocké localement
-- **Transactions ACID** : Intégrité des données garantie
-- **Vérification Owner** : Commandes sensibles protégées
-- **Gestion des DMs** : Protection contre les erreurs de messagerie privée
-
-## 📝 Configuration Avancée
-
-### Modifier le taux de conversion
-Dans `commands/acheter-carte.js` et `commands/boutique.js` :
 ```javascript
-const POINTS_PER_ROBUX = 10; // Changez cette valeur
+const DISCORD_CLIENT_ID = 'VOTRE_CLIENT_ID_ICI';
 ```
 
-### Modifier les gains d'XP
-Dans `events/messageCreate.js` :
+### 3. Backend (Optionnel)
+
+Pour une authentification complète, vous aurez besoin d'un backend pour :
+
+- Échanger le code d'autorisation contre un token
+- Stocker les tokens de manière sécurisée
+- Fournir une API pour les statistiques
+
+Exemple avec Node.js et Express :
+
 ```javascript
-const xpGained = Math.floor(Math.random() * 11) + 15; // 15 à 25
+const express = require('express');
+const axios = require('axios');
+
+const app = express();
+app.use(express.json());
+
+app.post('/api/auth/discord', async (req, res) => {
+    const { code } = req.body;
+    
+    try {
+        // Échanger le code contre un token
+        const response = await axios.post('https://discord.com/api/oauth2/token', {
+            client_id: 'YOUR_CLIENT_ID',
+            client_secret: 'YOUR_CLIENT_SECRET',
+            grant_type: 'authorization_code',
+            code: code,
+            redirect_uri: 'YOUR_REDIRECT_URI'
+        }, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        
+        const { access_token } = response.data;
+        
+        // Récupérer les informations utilisateur
+        const userResponse = await axios.get('https://discord.com/api/users/@me', {
+            headers: {
+                'Authorization': `Bearer ${access_token}`
+            }
+        });
+        
+        res.json({
+            token: access_token,
+            user: userResponse.data
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Authentication failed' });
+    }
+});
+
+app.listen(3000);
 ```
 
-### Modifier le cooldown
-Dans `events/messageCreate.js` :
+### 4. Déploiement
+
+#### Option 1: Déploiement local
+
+1. Installez un serveur HTTP (ex: `npm install -g http-server`)
+2. Lancez le serveur : `http-server -p 3000`
+3. Accédez à `http://localhost:3000`
+
+#### Option 2: Déploiement sur Vercel/Netlify
+
+1. Poussez le dossier `website` sur GitHub
+2. Connectez votre repo à Vercel ou Netlify
+3. Déployez automatiquement
+
+#### Option 3: Intégration avec le bot Node.js
+
+Vous pouvez intégrer cette interface web directement dans votre bot Node.js en ajoutant Express :
+
 ```javascript
-const expirationTime = cooldowns.get(userId) + 60000; // 60 secondes en millisecondes
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const PORT = process.env.WEB_PORT || 3000;
+
+// Servir les fichiers statiques
+app.use(express.static(path.join(__dirname, 'website')));
+
+// API endpoints
+app.get('/api/stats', (req, res) => {
+    // Retourner les statistiques du bot
+    res.json({
+        servers: client.guilds.cache.size,
+        users: client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0),
+        tasks: 25,
+        points: 100000
+    });
+});
+
+app.listen(PORT, () => {
+    console.log(`Serveur web démarré sur le port ${PORT}`);
+});
 ```
 
-### Modifier la formule de niveau
-Dans `events/messageCreate.js` :
-```javascript
-const xpNeededForNextLevel = user.level * 120; // Changez le multiplicateur
+## Structure des fichiers
+
+```
+website/
+├── index.html          # Page d'accueil
+├── callback.html       # Page de callback OAuth2
+├── dashboard.html      # Tableau de bord utilisateur
+├── script.js          # JavaScript principal
+└── README.md          # Ce fichier
 ```
 
-## 🛠️ Dépannage
+## Personnalisation
 
-### Le bot ne démarre pas
-- Vérifiez que le token dans `.env` est correct
-- Assurez-vous que Node.js est installé (version 18+)
-- Vérifiez que toutes les dépendances sont installées
+### Modifier les couleurs
 
-### Les commandes Slash n'apparaissent pas
-- Attendez quelques minutes après le démarrage du bot
-- Vérifiez que le bot a les permissions nécessaires
-- Réessayez après avoir redémarré le bot
+Les couleurs principales sont définies dans les fichiers HTML avec des classes Tailwind CSS. Vous pouvez modifier :
 
-### Erreur lors de l'achat
-- Vérifiez que vous avez assez de points
-- Assurez-vous que les DMs sont activés
-- Vérifiez que le stock n'est pas vide
+- `gradient-bg` : Le dégradé principal (violet → rose)
+- `discord-btn` : Le style des boutons Discord
+- `card-gradient` : Le style des cartes
 
-## 📄 Licence
+### Ajouter des fonctionnalités
 
-ISC
+1. **API Backend** : Connectez l'interface à votre base de données SQLite
+2. **WebSocket** : Ajoutez des mises à jour en temps réel
+3. **Notifications** : Intégrez les notifications Discord
+4. **Paiements** : Ajoutez une interface de paiement
 
-## 🤝 Contribution
+## Sécurité
 
-Ce projet est fourni tel quel. N'hésitez pas à l'adapter selon vos besoins.
+- ⚠️ Ne stockez JAMAIS votre `Client Secret` dans les fichiers frontend
+- ⚠️ Utilisez toujours HTTPS en production
+- ⚠ Validez toujours les tokens côté serveur
+- ⚠️ Implémentez la protection CSRF
 
-## ⚠️ Note Importante
+## Support
 
-Ce bot est fourni à des fins éducatives. L'utilisation de codes cadeaux Roblox doit respecter les conditions d'utilisation de Roblox. L'auteur n'est pas responsable de l'utilisation abusive de ce logiciel.
+Pour toute question ou problème, contactez l'équipe de développement.
+
+## Licence
+
+Ce projet est propriétaire. Tous droits réservés.
