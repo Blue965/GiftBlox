@@ -30,51 +30,41 @@
     </div>
 
     <script>
-        // Récupérer le code d'autorisation de l'URL
+        // 1. On extrait les paramètres après le "#" (jeton Discord) ou le "?" (erreurs)
+        const fragment = new URLSearchParams(window.location.hash.slice(1));
         const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const error = urlParams.get('error');
+        
+        const accessToken = fragment.get('access_token');
+        const error = urlParams.get('error') || fragment.get('error');
 
         if (error) {
-            // Rediriger vers la page d'accueil avec une erreur
+            // En cas de refus de l'utilisateur, retour à l'accueil avec l'erreur
             window.location.href = `index.html?error=${error}`;
-        } else if (code) {
-            // Envoyer le code à votre backend pour échanger contre un token
-            // Pour l'instant, nous allons simuler cela
-            fetch('/api/auth/discord', {
-                method: 'POST',
+        } else if (accessToken) {
+            // 2. On récupère directement les vraies infos du profil utilisateur via l'API Discord
+            fetch('https://discord.com/api/users/@me', {
                 headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ code: code })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.token) {
-                    // Stocker le token
-                    localStorage.setItem('discord_token', data.token);
-                    localStorage.setItem('discord_user', JSON.stringify(data.user));
-                    
-                    // Rediriger vers le tableau de bord
-                    window.location.href = 'dashboard.html';
-                } else {
-                    throw new Error('Token non reçu');
+                    'Authorization': `Bearer ${accessToken}` 
                 }
             })
-            .catch(error => {
-                console.error('Erreur lors de l\'authentification:', error);
-                // Pour la démonstration, simuler une connexion réussie
-                localStorage.setItem('discord_token', 'demo_token');
-                localStorage.setItem('discord_user', JSON.stringify({
-                    id: '123456789',
-                    username: 'DemoUser',
-                    avatar: 'https://cdn.discordapp.com/embed/avatars/0.png',
-                    discriminator: '1234'
-                }));
+            .then(response => {
+                if (!response.ok) throw new Error('Impossible de charger le profil Discord');
+                return response.json();
+            })
+            .then(userData => {
+                // 3. On sauvegarde le jeton et les vraies données de l'utilisateur en local
+                localStorage.setItem('discord_token', accessToken);
+                localStorage.setItem('discord_user', JSON.stringify(userData));
+                
+                // 4. Redirection vers votre tableau de bord fonctionnel
                 window.location.href = 'dashboard.html';
+            })
+            .catch(err => {
+                console.error('Erreur d\'authentification:', err);
+                window.location.href = 'index.html?error=fetch_failed';
             });
         } else {
-            // Pas de code, rediriger vers la page d'accueil
+            // Si aucun jeton n'est détecté, retour à l'accueil
             window.location.href = 'index.html';
         }
     </script>

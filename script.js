@@ -1,7 +1,7 @@
 // Configuration Discord OAuth2
 const DISCORD_CLIENT_ID = '1513281082626281472'; // Remplacez par votre Client ID Discord
 const REDIRECT_URI = window.location.origin + '/callback.html';
-const DISCORD_AUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify%20guilds.join%20guilds`;
+const DISCORD_AUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify%20guilds.join%20guilds`;
 
 // Animation des statistiques
 function animateValue(element, start, end, duration) {

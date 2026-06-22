@@ -170,10 +170,15 @@
 
         // Mettre à jour l'interface avec les données utilisateur
         function updateUI(user) {
-            document.getElementById('userAvatar').src = user.avatar || 'https://cdn.discordapp.com/embed/avatars/0.png';
+            // Discord API returns avatar as a hash, need to construct the URL
+            const avatarUrl = user.avatar 
+                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+                : `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png`;
+            
+            document.getElementById('userAvatar').src = avatarUrl;
             document.getElementById('userName').textContent = user.username;
             document.getElementById('welcomeUserName').textContent = user.username;
-            document.getElementById('profileAvatar').src = user.avatar || 'https://cdn.discordapp.com/embed/avatars/0.png';
+            document.getElementById('profileAvatar').src = avatarUrl;
             document.getElementById('profileName').textContent = user.username;
         }
 
