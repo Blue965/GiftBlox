@@ -201,6 +201,11 @@
                             <span class="text-purple-400">-</span>
                         </div>
                     </div>
+                    <div class="mt-6 pt-6 border-t border-gray-700">
+                        <button onclick="refreshProfile()" class="w-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 px-4 py-3 rounded-lg font-medium transition">
+                            <i class="fas fa-sync-alt mr-2"></i>Rafraîchir le profil
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Account Settings -->
@@ -459,16 +464,61 @@
         }
 
         function updateUI(user) {
-            const avatarUrl = user.avatar 
+            const avatarUrl = user.avatar
                 ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
                 : `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png`;
-            
+
             document.getElementById('userAvatar').src = avatarUrl;
             document.getElementById('userName').textContent = user.username;
             document.getElementById('profileAvatar').src = avatarUrl;
             document.getElementById('profileName').textContent = user.username;
             document.getElementById('profileDiscriminator').textContent = `#${user.discriminator}`;
             document.getElementById('profileId').textContent = user.id;
+        }
+
+        function refreshProfile() {
+            const token = localStorage.getItem('discord_token');
+            if (!token) {
+                alert('Vous devez être connecté pour rafraîchir votre profil.');
+                return;
+            }
+
+            // Fetch fresh user data from Discord API
+            fetch('https://discord.com/api/users/@me', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la récupération du profil');
+                }
+                return response.json();
+            })
+            .then(user => {
+                // Update localStorage with fresh data
+                localStorage.setItem('discord_user', JSON.stringify(user));
+                
+                // Update UI
+                updateUI(user);
+                
+                // Show success feedback
+                const button = document.querySelector('button[onclick="refreshProfile()"]');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check mr-2"></i>Profil mis à jour !';
+                button.classList.remove('bg-purple-500/20', 'text-purple-400');
+                button.classList.add('bg-green-500/20', 'text-green-400');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('bg-green-500/20', 'text-green-400');
+                    button.classList.add('bg-purple-500/20', 'text-purple-400');
+                }, 2000);
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur lors du rafraîchissement du profil. Veuillez réessayer.');
+            });
         }
 
         function loadSettings() {
