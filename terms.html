@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditions d'Utilisation - GiftBlox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="settings.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Rajdhani', sans-serif;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            position: relative;
+        }
+        
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23ffffff" fill-opacity="0.02" width="100" height="100"/></svg>');
+            pointer-events: none;
+        }
+        
+        .discord-btn {
+            background: linear-gradient(135deg, #5865F2 0%, #7289da 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .discord-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(88, 101, 242, 0.3);
+        }
+        
+        .card-gradient {
+            background: linear-gradient(145deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-gift text-purple-500 text-2xl mr-2"></i>
+                    <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">GiftBlox</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-300 hover:text-white transition">Accueil</a>
+                    <a href="dashboard.html" class="text-gray-300 hover:text-white transition">Dashboard</a>
+                    <a href="boutique.html" class="text-gray-300 hover:text-white transition">Boutique</a>
+                    <a href="parametres.html" class="text-gray-300 hover:text-white transition">Paramètres</a>
+                    <a href="docs.html" class="text-gray-300 hover:text-white transition">Documentation</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobileMenuBtn" class="text-gray-300 hover:text-white">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-gray-900 border-t border-gray-800">
+            <div class="px-4 py-4 space-y-3">
+                <a href="index.html" class="block text-gray-300 hover:text-white transition">Accueil</a>
+                <a href="dashboard.html" class="block text-gray-300 hover:text-white transition">Dashboard</a>
+                <a href="boutique.html" class="block text-gray-300 hover:text-white transition">Boutique</a>
+                <a href="parametres.html" class="block text-gray-300 hover:text-white transition">Paramètres</a>
+                <a href="docs.html" class="block text-gray-300 hover:text-white transition">Documentation</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg min-h-[30vh] flex items-center justify-center relative overflow-hidden pt-16">
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                <span class="bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">Conditions d'Utilisation</span>
+            </h1>
+            <p class="text-xl text-purple-100 mb-8">
+                Dernière mise à jour : Juin 2026
+            </p>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="space-y-8">
+                <!-- Introduction -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">1. Introduction</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        Bienvenue sur GiftBlox. En utilisant notre bot Discord et nos services, vous acceptez les présentes Conditions d'Utilisation. 
+                        Veuillez les lire attentivement avant d'utiliser nos services.
+                    </p>
+                </div>
+
+                <!-- Acceptation -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">2. Acceptation des Conditions</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        En utilisant GiftBlox, vous déclarez avoir lu, compris et accepté les présentes Conditions d'Utilisation. 
+                        Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.
+                    </p>
+                    <p class="text-gray-300 leading-relaxed">
+                        Nous nous réservons le droit de modifier ces conditions à tout moment. Les modifications prendront effet 
+                        dès leur publication sur cette page.
+                    </p>
+                </div>
+
+                <!-- Utilisation du Bot -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">3. Utilisation du Bot</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Vous acceptez d'utiliser GiftBlox conformément aux lois et réglementations en vigueur et aux présentes conditions.
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Ne pas utiliser le bot à des fins illégales ou frauduleuses</li>
+                        <li>Ne pas tenter d'exploiter des vulnérabilités du bot</li>
+                        <li>Ne pas utiliser de scripts automatisés pour gagner des points injustement</li>
+                        <li>Respecter les autres utilisateurs et la communauté Discord</li>
+                        <li>Ne pas partager de contenu inapproprié ou offensant</li>
+                    </ul>
+                </div>
+
+                <!-- Compte Utilisateur -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">4. Compte Utilisateur</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Pour utiliser certaines fonctionnalités de GiftBlox, vous devez créer un compte via Discord OAuth2.
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Vous êtes responsable de la sécurité de votre compte</li>
+                        <li>Vous devez fournir des informations exactes et complètes</li>
+                        <li>Un seul compte par personne est autorisé</li>
+                        <li>Les comptes multiples peuvent être suspendus ou supprimés</li>
+                    </ul>
+                </div>
+
+                <!-- Points et Récompenses -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">5. Points et Récompenses</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        GiftBlox utilise un système de points et de récompenses pour encourager la participation.
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Les points sont virtuels et n'ont aucune valeur monétaire réelle</li>
+                        <li>Les récompenses sont soumises à disponibilité</li>
+                        <li>Nous nous réservons le droit de modifier le système de points à tout moment</li>
+                        <li>Les points ne peuvent être ni vendus ni transférés</li>
+                    </ul>
+                </div>
+
+                <!-- Propriété Intellectuelle -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">6. Propriété Intellectuelle</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        GiftBlox et tout son contenu (logos, designs, code, etc.) sont la propriété exclusive de ses créateurs.
+                    </p>
+                    <p class="text-gray-300 leading-relaxed">
+                        Vous ne pouvez pas copier, modifier, distribuer ou utiliser le contenu de GiftBlox sans autorisation écrite.
+                    </p>
+                </div>
+
+                <!-- Limitation de Responsabilité -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">7. Limitation de Responsabilité</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        GiftBlox est fourni "tel quel" sans aucune garantie.
+                    </p>
+                    <p class="text-gray-300 leading-relaxed">
+                        Nous ne sommes pas responsables des dommages directs ou indirects résultant de l'utilisation de nos services.
+                    </p>
+                </div>
+
+                <!-- Résiliation -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">8. Résiliation</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Nous nous réservons le droit de suspendre ou de résilier votre accès à GiftBlox en cas de violation des présentes conditions.
+                    </p>
+                    <p class="text-gray-300 leading-relaxed">
+                        Vous pouvez également supprimer votre compte à tout moment via les paramètres.
+                    </p>
+                </div>
+
+                <!-- Contact -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">9. Contact</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Pour toute question concernant ces Conditions d'Utilisation, n'hésitez pas à nous contacter.
+                    </p>
+                    <p class="text-gray-300 leading-relaxed">
+                        Email : support@giftblox.com<br>
+                        Discord : Rejoignez notre serveur de support
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">GiftBlox</h3>
+                    <p class="text-gray-400">Le bot Discord de fidélité ultime pour votre communauté.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Liens</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="index.html" class="hover:text-white transition">Accueil</a></li>
+                        <li><a href="dashboard.html" class="hover:text-white transition">Dashboard</a></li>
+                        <li><a href="docs.html" class="hover:text-white transition">Documentation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Légal</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="terms.html" class="hover:text-white transition">Conditions d'Utilisation</a></li>
+                        <li><a href="privacy.html" class="hover:text-white transition">Politique de Confidentialité</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 GiftBlox. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

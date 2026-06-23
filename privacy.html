@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politique de Confidentialité - GiftBlox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="settings.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Rajdhani', sans-serif;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            position: relative;
+        }
+        
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23ffffff" fill-opacity="0.02" width="100" height="100"/></svg>');
+            pointer-events: none;
+        }
+        
+        .discord-btn {
+            background: linear-gradient(135deg, #5865F2 0%, #7289da 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .discord-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(88, 101, 242, 0.3);
+        }
+        
+        .card-gradient {
+            background: linear-gradient(145deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-gift text-purple-500 text-2xl mr-2"></i>
+                    <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">GiftBlox</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-300 hover:text-white transition">Accueil</a>
+                    <a href="dashboard.html" class="text-gray-300 hover:text-white transition">Dashboard</a>
+                    <a href="boutique.html" class="text-gray-300 hover:text-white transition">Boutique</a>
+                    <a href="parametres.html" class="text-gray-300 hover:text-white transition">Paramètres</a>
+                    <a href="docs.html" class="text-gray-300 hover:text-white transition">Documentation</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobileMenuBtn" class="text-gray-300 hover:text-white">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-gray-900 border-t border-gray-800">
+            <div class="px-4 py-4 space-y-3">
+                <a href="index.html" class="block text-gray-300 hover:text-white transition">Accueil</a>
+                <a href="dashboard.html" class="block text-gray-300 hover:text-white transition">Dashboard</a>
+                <a href="boutique.html" class="block text-gray-300 hover:text-white transition">Boutique</a>
+                <a href="parametres.html" class="block text-gray-300 hover:text-white transition">Paramètres</a>
+                <a href="docs.html" class="block text-gray-300 hover:text-white transition">Documentation</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg min-h-[30vh] flex items-center justify-center relative overflow-hidden pt-16">
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                <span class="bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">Politique de Confidentialité</span>
+            </h1>
+            <p class="text-xl text-purple-100 mb-8">
+                Dernière mise à jour : Juin 2026
+            </p>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="space-y-8">
+                <!-- Introduction -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">1. Introduction</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        Chez GiftBlox, nous prenons votre confidentialité très au sérieux. Cette Politique de Confidentialité 
+                        explique comment nous collectons, utilisons et protégeons vos données personnelles lorsque vous utilisez 
+                        notre bot Discord et nos services.
+                    </p>
+                </div>
+
+                <!-- Données Collectées -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">2. Données Collectées</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Nous collectons les types de données suivants :
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li><strong>Informations Discord :</strong> ID utilisateur, nom d'utilisateur, avatar, discriminateur</li>
+                        <li><strong>Données de compte :</strong> Points, XP, niveau, historique des tâches</li>
+                        <li><strong>Données d'utilisation :</strong> Fréquence d'utilisation, fonctionnalités utilisées</li>
+                        <li><strong>Préférences :</strong> Paramètres de langue, thème, notifications</li>
+                    </ul>
+                </div>
+
+                <!-- Utilisation des Données -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">3. Utilisation des Données</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Nous utilisons vos données pour :
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Fournir et améliorer nos services</li>
+                        <li>Gérer votre compte et vos points</li>
+                        <li>Personnaliser votre expérience</li>
+                        <li>Communiquer avec vous (si vous avez activé les notifications)</li>
+                        <li>Analyser l'utilisation pour améliorer le bot</li>
+                        <li>Prévenir les abus et fraudes</li>
+                    </ul>
+                </div>
+
+                <!-- Stockage des Données -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">4. Stockage des Données</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Vos données sont stockées de manière sécurisée :
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Dans une base de données SQLite sécurisée</li>
+                        <li>Sur des serveurs situés dans l'Union Européenne</li>
+                        <li>Encrypted pour les données sensibles</li>
+                        <li>Accessibles uniquement par le personnel autorisé</li>
+                    </ul>
+                </div>
+
+                <!-- Partage des Données -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">5. Partage des Données</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Nous ne vendons pas vos données personnelles. Nous pouvons partager vos données uniquement dans les cas suivants :
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Avec votre consentement explicite</li>
+                        <li>Pour se conformer aux obligations légales</li>
+                        <li>Pour protéger nos droits et propriété</li>
+                        <li>Avec des prestataires de services de confiance (hébergement, etc.)</li>
+                    </ul>
+                </div>
+
+                <!-- Cookies et Stockage Local -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">6. Cookies et Stockage Local</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Nous utilisons le stockage local du navigateur pour :
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Sauvegarder vos préférences (thème, langue)</li>
+                        <li>Stocker votre token de connexion Discord</li>
+                        <li>Mémoriser vos paramètres de notification</li>
+                    </ul>
+                    <p class="text-gray-300 leading-relaxed mt-4">
+                        Ces données sont stockées localement sur votre appareil et ne sont pas partagées avec des tiers.
+                    </p>
+                </div>
+
+                <!-- Vos Droits -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">7. Vos Droits</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Conformément au RGPD, vous avez les droits suivants :
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li><strong>Accès :</strong> Demander une copie de vos données</li>
+                        <li><strong>Rectification :</strong> Demander la correction de vos données</li>
+                        <li><strong>Suppression :</strong> Demander la suppression de vos données</li>
+                        <li><strong>Portabilité :</strong> Demander le transfert de vos données</li>
+                        <li><strong>Opposition :</strong> Vous opposer au traitement de vos données</li>
+                    </ul>
+                    <p class="text-gray-300 leading-relaxed mt-4">
+                        Pour exercer ces droits, contactez-nous à support@giftblox.com
+                    </p>
+                </div>
+
+                <!-- Sécurité -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">8. Sécurité</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Nous mettons en œuvre des mesures de sécurité appropriées pour protéger vos données :
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Chiffrement des données sensibles</li>
+                        <li>Accès restreint aux données</li>
+                        <li>Surveillance régulière des systèmes</li>
+                        <li>Mises à jour de sécurité régulières</li>
+                    </ul>
+                </div>
+
+                <!-- Mineurs -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">9. Protection des Mineurs</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        GiftBlox n'est pas destiné aux enfants de moins de 13 ans. Nous ne collectons pas sciemment 
+                        des données personnelles d'enfants. Si nous découvrons que nous avons collecté des données 
+                        d'un mineur sans consentement parental, nous prendrons les mesures nécessaires pour les supprimer.
+                    </p>
+                </div>
+
+                <!-- Modifications -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">10. Modifications</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        Nous pouvons modifier cette Politique de Confidentialité à tout moment. Les modifications seront 
+                        publiées sur cette page avec la date de mise à jour. Nous vous encourageons à consulter 
+                        régulièrement cette page pour rester informé.
+                    </p>
+                </div>
+
+                <!-- Contact -->
+                <div class="card-gradient rounded-xl p-8 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-400">11. Contact</h2>
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                        Pour toute question concernant cette Politique de Confidentialité ou pour exercer vos droits, 
+                        n'hésitez pas à nous contacter :
+                    </p>
+                    <p class="text-gray-300 leading-relaxed">
+                        Email : support@giftblox.com<br>
+                        Discord : Rejoignez notre serveur de support
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">GiftBlox</h3>
+                    <p class="text-gray-400">Le bot Discord de fidélité ultime pour votre communauté.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Liens</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="index.html" class="hover:text-white transition">Accueil</a></li>
+                        <li><a href="dashboard.html" class="hover:text-white transition">Dashboard</a></li>
+                        <li><a href="docs.html" class="hover:text-white transition">Documentation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Légal</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="terms.html" class="hover:text-white transition">Conditions d'Utilisation</a></li>
+                        <li><a href="privacy.html" class="hover:text-white transition">Politique de Confidentialité</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 GiftBlox. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
