@@ -114,7 +114,7 @@
     <!-- Settings Content -->
     <section class="py-20 bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-2 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Profile Settings -->
                 <div class="card-gradient rounded-xl p-6 border border-gray-800">
                     <h2 class="text-2xl font-bold mb-6">Profil</h2>
@@ -166,21 +166,21 @@
                         <div class="flex justify-between items-center">
                             <span class="text-gray-400">Notifications par email</span>
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="sr-only peer">
+                                <input type="checkbox" id="emailNotif" class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
                             </label>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-gray-400">Notifications Discord</span>
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" checked class="sr-only peer">
+                                <input type="checkbox" id="discordNotif" checked class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
                             </label>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-gray-400">Notifications de tâches</span>
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" checked class="sr-only peer">
+                                <input type="checkbox" id="tasksNotif" checked class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
                             </label>
                         </div>
@@ -194,24 +194,174 @@
                         <div class="flex justify-between items-center">
                             <span class="text-gray-400">Profil public</span>
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="sr-only peer">
+                                <input type="checkbox" id="publicProfile" class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
                             </label>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-gray-400">Afficher les statistiques</span>
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" checked class="sr-only peer">
+                                <input type="checkbox" id="showStats" checked class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
                             </label>
                         </div>
                     </div>
+                </div>
+
+                <!-- Language -->
+                <div class="card-gradient rounded-xl p-6 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-6">Langue</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-gray-400 block mb-2">Langue préférée</label>
+                            <select id="language" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500">
+                                <option value="fr">Français</option>
+                                <option value="en">English</option>
+                                <option value="es">Español</option>
+                                <option value="de">Deutsch</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theme -->
+                <div class="card-gradient rounded-xl p-6 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-6">Apparence</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-gray-400 block mb-2">Thème</label>
+                            <select id="theme" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500">
+                                <option value="dark">Sombre (Dark)</option>
+                                <option value="light">Clair (Light)</option>
+                                <option value="auto">Automatique</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Animations</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="animations" checked class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Points Settings -->
+                <div class="card-gradient rounded-xl p-6 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-6">Points & XP</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Alerte niveau supérieur</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="levelUpAlert" checked class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
+                            </label>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Alerte points gagnés</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="pointsAlert" checked class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="card-gradient rounded-xl p-6 border border-gray-800">
+                    <h2 class="text-2xl font-bold mb-6">Sécurité</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Connexions récentes</span>
+                            <span class="text-purple-400 cursor-pointer hover:underline">Voir</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Sessions actives</span>
+                            <span class="text-purple-400 cursor-pointer hover:underline">Gérer</span>
+                        </div>
+                        <button class="w-full bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-3 rounded-lg font-medium transition mt-4">
+                            <i class="fas fa-shield-alt mr-2"></i>Changer le mot de passe
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <div class="card-gradient rounded-xl p-6 border border-red-800/50">
+                    <h2 class="text-2xl font-bold mb-6 text-red-400">Zone de danger</h2>
+                    <div class="space-y-4">
+                        <button onclick="showDeleteConfirmation()" class="w-full bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-3 rounded-lg font-medium transition">
+                            <i class="fas fa-trash-alt mr-2"></i>Supprimer le compte
+                        </button>
+                        <p class="text-gray-500 text-sm">Cette action est irréversible. Toutes vos données seront perdues.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Save Button -->
+            <div class="mt-8 text-center">
+                <button onclick="showSaveConfirmation()" class="discord-btn text-white px-8 py-3 rounded-full font-semibold">
+                    <i class="fas fa-save mr-2"></i>Enregistrer les modifications
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Confirmation Modal -->
+    <div id="saveModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 border border-gray-700">
+            <div class="text-center">
+                <i class="fas fa-check-circle text-green-400 text-5xl mb-4"></i>
+                <h3 class="text-2xl font-bold mb-4">Enregistrer les modifications ?</h3>
+                <p class="text-gray-400 mb-6">Vos paramètres seront mis à jour. Cette action est irréversible.</p>
+                <div class="flex gap-4">
+                    <button onclick="cancelChanges()" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition">
+                        Annuler
+                    </button>
+                    <button onclick="saveChanges()" class="flex-1 discord-btn text-white px-6 py-3 rounded-lg font-medium">
+                        Enregistrer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 border border-gray-700">
+            <div class="text-center">
+                <i class="fas fa-check-circle text-green-400 text-5xl mb-4"></i>
+                <h3 class="text-2xl font-bold mb-4">Modifications enregistrées !</h3>
+                <p class="text-gray-400 mb-6">Vos paramètres ont été mis à jour avec succès.</p>
+                <button onclick="closeSuccessModal()" class="discord-btn text-white px-8 py-3 rounded-lg font-medium">
+                    Parfait !
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Delete Account Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 border border-red-800">
+            <div class="text-center">
+                <i class="fas fa-exclamation-triangle text-red-400 text-5xl mb-4"></i>
+                <h3 class="text-2xl font-bold mb-4 text-red-400">Supprimer le compte ?</h3>
+                <p class="text-gray-400 mb-6">Cette action est irréversible. Toutes vos données, points et historique seront définitivement supprimés.</p>
+                <div class="flex gap-4">
+                    <button onclick="closeDeleteModal()" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition">
+                        Annuler
+                    </button>
+                    <button onclick="deleteAccount()" class="flex-1 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-medium transition">
+                        Supprimer
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
     <script>
+        // Store original values for reset
+        let originalSettings = {};
+
         function checkAuth() {
             const token = localStorage.getItem('discord_token');
             const user = localStorage.getItem('discord_user');
@@ -223,6 +373,7 @@
             
             const userData = JSON.parse(user);
             updateUI(userData);
+            loadSettings();
             return true;
         }
 
@@ -237,6 +388,106 @@
             document.getElementById('profileName').textContent = user.username;
             document.getElementById('profileDiscriminator').textContent = `#${user.discriminator}`;
             document.getElementById('profileId').textContent = user.id;
+        }
+
+        function loadSettings() {
+            // Load settings from localStorage or use defaults
+            originalSettings = {
+                emailNotif: localStorage.getItem('emailNotif') === 'true',
+                discordNotif: localStorage.getItem('discordNotif') !== 'false',
+                tasksNotif: localStorage.getItem('tasksNotif') !== 'false',
+                publicProfile: localStorage.getItem('publicProfile') === 'true',
+                showStats: localStorage.getItem('showStats') !== 'false',
+                language: localStorage.getItem('language') || 'fr',
+                theme: localStorage.getItem('theme') || 'dark',
+                animations: localStorage.getItem('animations') !== 'false',
+                levelUpAlert: localStorage.getItem('levelUpAlert') !== 'false',
+                pointsAlert: localStorage.getItem('pointsAlert') !== 'false'
+            };
+
+            // Apply values to checkboxes and selects
+            document.getElementById('emailNotif').checked = originalSettings.emailNotif;
+            document.getElementById('discordNotif').checked = originalSettings.discordNotif;
+            document.getElementById('tasksNotif').checked = originalSettings.tasksNotif;
+            document.getElementById('publicProfile').checked = originalSettings.publicProfile;
+            document.getElementById('showStats').checked = originalSettings.showStats;
+            document.getElementById('language').value = originalSettings.language;
+            document.getElementById('theme').value = originalSettings.theme;
+            document.getElementById('animations').checked = originalSettings.animations;
+            document.getElementById('levelUpAlert').checked = originalSettings.levelUpAlert;
+            document.getElementById('pointsAlert').checked = originalSettings.pointsAlert;
+        }
+
+        function showSaveConfirmation() {
+            document.getElementById('saveModal').classList.remove('hidden');
+        }
+
+        function cancelChanges() {
+            // Reset to original values
+            document.getElementById('emailNotif').checked = originalSettings.emailNotif;
+            document.getElementById('discordNotif').checked = originalSettings.discordNotif;
+            document.getElementById('tasksNotif').checked = originalSettings.tasksNotif;
+            document.getElementById('publicProfile').checked = originalSettings.publicProfile;
+            document.getElementById('showStats').checked = originalSettings.showStats;
+            document.getElementById('language').value = originalSettings.language;
+            document.getElementById('theme').value = originalSettings.theme;
+            document.getElementById('animations').checked = originalSettings.animations;
+            document.getElementById('levelUpAlert').checked = originalSettings.levelUpAlert;
+            document.getElementById('pointsAlert').checked = originalSettings.pointsAlert;
+
+            document.getElementById('saveModal').classList.add('hidden');
+        }
+
+        function saveChanges() {
+            // Save new values to localStorage
+            localStorage.setItem('emailNotif', document.getElementById('emailNotif').checked);
+            localStorage.setItem('discordNotif', document.getElementById('discordNotif').checked);
+            localStorage.setItem('tasksNotif', document.getElementById('tasksNotif').checked);
+            localStorage.setItem('publicProfile', document.getElementById('publicProfile').checked);
+            localStorage.setItem('showStats', document.getElementById('showStats').checked);
+            localStorage.setItem('language', document.getElementById('language').value);
+            localStorage.setItem('theme', document.getElementById('theme').value);
+            localStorage.setItem('animations', document.getElementById('animations').checked);
+            localStorage.setItem('levelUpAlert', document.getElementById('levelUpAlert').checked);
+            localStorage.setItem('pointsAlert', document.getElementById('pointsAlert').checked);
+
+            // Update original values
+            originalSettings = {
+                emailNotif: document.getElementById('emailNotif').checked,
+                discordNotif: document.getElementById('discordNotif').checked,
+                tasksNotif: document.getElementById('tasksNotif').checked,
+                publicProfile: document.getElementById('publicProfile').checked,
+                showStats: document.getElementById('showStats').checked,
+                language: document.getElementById('language').value,
+                theme: document.getElementById('theme').value,
+                animations: document.getElementById('animations').checked,
+                levelUpAlert: document.getElementById('levelUpAlert').checked,
+                pointsAlert: document.getElementById('pointsAlert').checked
+            };
+
+            // Hide confirmation modal and show success modal
+            document.getElementById('saveModal').classList.add('hidden');
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+
+        function showDeleteConfirmation() {
+            document.getElementById('deleteModal').classList.remove('hidden');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+        }
+
+        function deleteAccount() {
+            // In a real app, this would call an API to delete the account
+            // For now, we'll just clear localStorage and redirect
+            localStorage.clear();
+            alert('Compte supprimé avec succès.');
+            window.location.href = 'index.html';
         }
 
         function logout() {
