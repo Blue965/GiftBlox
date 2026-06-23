@@ -6,6 +6,8 @@ function applySettings() {
     const animations = localStorage.getItem('animations') !== 'false';
     const language = localStorage.getItem('language') || 'fr';
 
+    console.log('Applying settings:', { theme, animations, language });
+
     // Apply theme
     if (theme === 'light') {
         document.body.classList.remove('bg-gray-900');
@@ -134,19 +136,26 @@ function applySettings() {
     }
 
     // Apply language if translations are available
-    if (typeof applyLanguage === 'function') {
-        applyLanguage(language);
-    }
+    setTimeout(() => {
+        if (typeof applyLanguage === 'function') {
+            console.log('Applying language:', language);
+            applyLanguage(language);
+        } else {
+            console.warn('applyLanguage function not available');
+        }
+    }, 100);
 }
 
 // Initialize settings on page load
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, applying settings');
     applySettings();
 });
 
 // Listen for settings changes (for multi-tab sync)
 window.addEventListener('storage', (e) => {
     if (e.key === 'theme' || e.key === 'animations' || e.key === 'language') {
+        console.log('Storage changed, applying settings');
         applySettings();
     }
 });

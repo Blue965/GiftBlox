@@ -459,7 +459,12 @@
             const userData = JSON.parse(user);
             updateUI(userData);
             loadSettings();
-            applySettings(); // Apply saved settings on load
+            // Apply settings after a short delay to ensure all scripts are loaded
+            setTimeout(() => {
+                if (typeof applySettings === 'function') {
+                    applySettings();
+                }
+            }, 200);
             return true;
         }
 
@@ -659,8 +664,10 @@
             localStorage.setItem('levelUpAlert', document.getElementById('levelUpAlert').checked);
             localStorage.setItem('pointsAlert', document.getElementById('pointsAlert').checked);
 
-            // Apply settings immediately
-            applySettings();
+            // Apply settings immediately using the shared settings.js function
+            if (typeof applySettings === 'function') {
+                applySettings();
+            }
 
             // Update original values
             originalSettings = {
@@ -679,35 +686,6 @@
             // Hide confirmation modal and show success modal
             document.getElementById('saveModal').classList.add('hidden');
             document.getElementById('successModal').classList.remove('hidden');
-        }
-
-        function applySettings() {
-            const theme = localStorage.getItem('theme') || 'dark';
-            const animations = localStorage.getItem('animations') !== 'false';
-
-            // Apply theme
-            if (theme === 'light') {
-                document.body.classList.remove('bg-gray-900');
-                document.body.classList.add('bg-gray-100');
-            } else if (theme === 'dark') {
-                document.body.classList.remove('bg-gray-100');
-                document.body.classList.add('bg-gray-900');
-            }
-
-            // Apply animations
-            if (!animations) {
-                document.documentElement.style.setProperty('--animation-duration', '0s');
-                document.querySelectorAll('*').forEach(el => {
-                    el.style.animation = 'none';
-                    el.style.transition = 'none';
-                });
-            } else {
-                document.documentElement.style.removeProperty('--animation-duration');
-                document.querySelectorAll('*').forEach(el => {
-                    el.style.animation = '';
-                    el.style.transition = '';
-                });
-            }
         }
 
         function closeSuccessModal() {
