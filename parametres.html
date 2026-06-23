@@ -13,6 +13,7 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="settings.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
         
@@ -443,15 +444,16 @@
         function checkAuth() {
             const token = localStorage.getItem('discord_token');
             const user = localStorage.getItem('discord_user');
-            
+
             if (!token || !user) {
                 window.location.href = 'index.html';
                 return false;
             }
-            
+
             const userData = JSON.parse(user);
             updateUI(userData);
             loadSettings();
+            applySettings(); // Apply saved settings on load
             return true;
         }
 
@@ -500,6 +502,8 @@
 
         function initCustomSelect(selectId, value) {
             const select = document.getElementById(selectId);
+            if (!select) return;
+
             const trigger = select.querySelector('.custom-select-trigger');
             const options = select.querySelectorAll('.custom-option');
             const selectedValue = select.querySelector('.selected-value');
@@ -514,28 +518,39 @@
                 }
             });
 
+            // Remove existing event listeners to avoid duplicates
+            const newTrigger = trigger.cloneNode(true);
+            trigger.parentNode.replaceChild(newTrigger, trigger);
+
             // Toggle dropdown
-            trigger.addEventListener('click', () => {
+            newTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
                 select.classList.toggle('open');
             });
 
             // Handle option selection
             options.forEach(option => {
-                option.addEventListener('click', () => {
-                    options.forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedValue.textContent = option.textContent;
+                const newOption = option.cloneNode(true);
+                option.parentNode.replaceChild(newOption, option);
+
+                newOption.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    select.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
+                    newOption.classList.add('selected');
+                    select.querySelector('.selected-value').textContent = newOption.textContent;
                     select.classList.remove('open');
                 });
             });
+        }
 
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            document.querySelectorAll('.custom-select.open').forEach(select => {
                 if (!select.contains(e.target)) {
                     select.classList.remove('open');
                 }
             });
-        }
+        });
 
         function getCustomSelectValue(selectId) {
             const select = document.getElementById(selectId);
@@ -545,6 +560,8 @@
 
         function setCustomSelectValue(selectId, value) {
             const select = document.getElementById(selectId);
+            if (!select) return;
+
             const options = select.querySelectorAll('.custom-option');
             const selectedValue = select.querySelector('.selected-value');
 
@@ -591,6 +608,9 @@
             localStorage.setItem('levelUpAlert', document.getElementById('levelUpAlert').checked);
             localStorage.setItem('pointsAlert', document.getElementById('pointsAlert').checked);
 
+            // Apply settings immediately
+            applySettings();
+
             // Update original values
             originalSettings = {
                 emailNotif: document.getElementById('emailNotif').checked,
@@ -608,6 +628,35 @@
             // Hide confirmation modal and show success modal
             document.getElementById('saveModal').classList.add('hidden');
             document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function applySettings() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            const animations = localStorage.getItem('animations') !== 'false';
+
+            // Apply theme
+            if (theme === 'light') {
+                document.body.classList.remove('bg-gray-900');
+                document.body.classList.add('bg-gray-100');
+            } else if (theme === 'dark') {
+                document.body.classList.remove('bg-gray-100');
+                document.body.classList.add('bg-gray-900');
+            }
+
+            // Apply animations
+            if (!animations) {
+                document.documentElement.style.setProperty('--animation-duration', '0s');
+                document.querySelectorAll('*').forEach(el => {
+                    el.style.animation = 'none';
+                    el.style.transition = 'none';
+                });
+            } else {
+                document.documentElement.style.removeProperty('--animation-duration');
+                document.querySelectorAll('*').forEach(el => {
+                    el.style.animation = '';
+                    el.style.transition = '';
+                });
+            }
         }
 
         function closeSuccessModal() {
