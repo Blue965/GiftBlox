@@ -13,6 +13,7 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="translations.js"></script>
     <script src="settings.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
@@ -170,9 +171,9 @@
     <section class="gradient-bg min-h-[30vh] flex items-center justify-center relative overflow-hidden pt-16">
         <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
             <h1 class="text-5xl md:text-7xl font-bold mb-6">
-                <span class="bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">Paramètres</span>
+                <span class="bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent" data-i18n="settings.title">Paramètres</span>
             </h1>
-            <p class="text-xl text-purple-100 mb-8">
+            <p class="text-xl text-purple-100 mb-8" data-i18n="settings.subtitle">
                 Gérez vos préférences
             </p>
         </div>
@@ -184,7 +185,7 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Profile Settings -->
                 <div class="card-gradient rounded-xl p-6 border border-gray-800">
-                    <h2 class="text-2xl font-bold mb-6">Profil</h2>
+                    <h2 class="text-2xl font-bold mb-6" data-i18n="settings.profile">Profil</h2>
                     <div class="text-center mb-6">
                         <img id="profileAvatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar" class="w-24 h-24 rounded-full mx-auto mb-4">
                         <h3 id="profileName" class="text-xl font-bold">Utilisateur</h3>
@@ -204,7 +205,7 @@
 
                 <!-- Account Settings -->
                 <div class="card-gradient rounded-xl p-6 border border-gray-800">
-                    <h2 class="text-2xl font-bold mb-6">Compte</h2>
+                    <h2 class="text-2xl font-bold mb-6" data-i18n="settings.account">Compte</h2>
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <span class="text-gray-400">Statut du compte</span>
@@ -221,31 +222,31 @@
                     </div>
                     <div class="mt-6 pt-6 border-t border-gray-700">
                         <button onclick="logout()" class="w-full bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-3 rounded-lg font-medium transition">
-                            <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                            <i class="fas fa-sign-out-alt mr-2"></i><span data-i18n="common.logout">Déconnexion</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Notifications -->
                 <div class="card-gradient rounded-xl p-6 border border-gray-800">
-                    <h2 class="text-2xl font-bold mb-6">Notifications</h2>
+                    <h2 class="text-2xl font-bold mb-6" data-i18n="settings.notifications">Notifications</h2>
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Notifications par email</span>
+                            <span class="text-gray-400" data-i18n="settings.email_notif">Notifications par email</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="emailNotif" class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
                             </label>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Notifications Discord</span>
+                            <span class="text-gray-400" data-i18n="settings.discord_notif">Notifications Discord</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="discordNotif" checked class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
                             </label>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Notifications de tâches</span>
+                            <span class="text-gray-400" data-i18n="settings.tasks_notif">Notifications de tâches</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="tasksNotif" checked class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
@@ -256,17 +257,17 @@
 
                 <!-- Privacy -->
                 <div class="card-gradient rounded-xl p-6 border border-gray-800">
-                    <h2 class="text-2xl font-bold mb-6">Confidentialité</h2>
+                    <h2 class="text-2xl font-bold mb-6" data-i18n="settings.privacy">Confidentialité</h2>
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Profil public</span>
+                            <span class="text-gray-400" data-i18n="settings.public_profile">Profil public</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="publicProfile" class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
                             </label>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Afficher les statistiques</span>
+                            <span class="text-gray-400" data-i18n="settings.show_stats">Afficher les statistiques</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="showStats" checked class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
@@ -277,10 +278,10 @@
 
                 <!-- Language -->
                 <div class="card-gradient rounded-xl p-6 border border-gray-800">
-                    <h2 class="text-2xl font-bold mb-6">Langue</h2>
+                    <h2 class="text-2xl font-bold mb-6" data-i18n="settings.language">Langue</h2>
                     <div class="space-y-4">
                         <div>
-                            <label class="text-gray-400 block mb-2">Langue préférée</label>
+                            <label class="text-gray-400 block mb-2" data-i18n="settings.language">Langue préférée</label>
                             <div class="custom-select" id="languageSelect">
                                 <div class="custom-select-trigger">
                                     <span class="selected-value">Français</span>
@@ -299,10 +300,10 @@
 
                 <!-- Theme -->
                 <div class="card-gradient rounded-xl p-6 border border-gray-800">
-                    <h2 class="text-2xl font-bold mb-6">Apparence</h2>
+                    <h2 class="text-2xl font-bold mb-6" data-i18n="settings.appearance">Apparence</h2>
                     <div class="space-y-4">
                         <div>
-                            <label class="text-gray-400 block mb-2">Thème</label>
+                            <label class="text-gray-400 block mb-2" data-i18n="settings.theme">Thème</label>
                             <div class="custom-select" id="themeSelect">
                                 <div class="custom-select-trigger">
                                     <span class="selected-value">Sombre (Dark)</span>
@@ -316,7 +317,7 @@
                             </div>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Animations</span>
+                            <span class="text-gray-400" data-i18n="settings.animations">Animations</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="animations" checked class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
@@ -327,17 +328,17 @@
 
                 <!-- Points Settings -->
                 <div class="card-gradient rounded-xl p-6 border border-gray-800">
-                    <h2 class="text-2xl font-bold mb-6">Points & XP</h2>
+                    <h2 class="text-2xl font-bold mb-6" data-i18n="settings.points_xp">Points & XP</h2>
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Alerte niveau supérieur</span>
+                            <span class="text-gray-400" data-i18n="settings.level_up_alert">Alerte niveau supérieur</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="levelUpAlert" checked class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
                             </label>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Alerte points gagnés</span>
+                            <span class="text-gray-400" data-i18n="settings.points_alert">Alerte points gagnés</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="pointsAlert" checked class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
@@ -348,30 +349,30 @@
 
                 <!-- Security -->
                 <div class="card-gradient rounded-xl p-6 border border-gray-800">
-                    <h2 class="text-2xl font-bold mb-6">Sécurité</h2>
+                    <h2 class="text-2xl font-bold mb-6" data-i18n="settings.security">Sécurité</h2>
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Connexions récentes</span>
-                            <span class="text-purple-400 cursor-pointer hover:underline">Voir</span>
+                            <span class="text-gray-400" data-i18n="settings.recent_connections">Connexions récentes</span>
+                            <span class="text-purple-400 cursor-pointer hover:underline" data-i18n="common.view">Voir</span>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Sessions actives</span>
-                            <span class="text-purple-400 cursor-pointer hover:underline">Gérer</span>
+                            <span class="text-gray-400" data-i18n="settings.active_sessions">Sessions actives</span>
+                            <span class="text-purple-400 cursor-pointer hover:underline" data-i18n="common.manage">Gérer</span>
                         </div>
                         <button class="w-full bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-3 rounded-lg font-medium transition mt-4">
-                            <i class="fas fa-shield-alt mr-2"></i>Changer le mot de passe
+                            <i class="fas fa-shield-alt mr-2"></i><span data-i18n="settings.change_password">Changer le mot de passe</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Danger Zone -->
                 <div class="card-gradient rounded-xl p-6 border border-red-800/50">
-                    <h2 class="text-2xl font-bold mb-6 text-red-400">Zone de danger</h2>
+                    <h2 class="text-2xl font-bold mb-6 text-red-400" data-i18n="settings.danger_zone">Zone de danger</h2>
                     <div class="space-y-4">
                         <button onclick="showDeleteConfirmation()" class="w-full bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-3 rounded-lg font-medium transition">
-                            <i class="fas fa-trash-alt mr-2"></i>Supprimer le compte
+                            <i class="fas fa-trash-alt mr-2"></i><span data-i18n="settings.delete_account">Supprimer le compte</span>
                         </button>
-                        <p class="text-gray-500 text-sm">Cette action est irréversible. Toutes vos données seront perdues.</p>
+                        <p class="text-gray-500 text-sm" data-i18n="settings.delete_warning">Cette action est irréversible. Toutes vos données seront perdues.</p>
                     </div>
                 </div>
             </div>
@@ -379,7 +380,7 @@
             <!-- Save Button -->
             <div class="mt-8 text-center">
                 <button onclick="showSaveConfirmation()" class="discord-btn text-white px-8 py-3 rounded-full font-semibold">
-                    <i class="fas fa-save mr-2"></i>Enregistrer les modifications
+                    <i class="fas fa-save mr-2"></i><span data-i18n="settings.save">Enregistrer les modifications</span>
                 </button>
             </div>
         </div>
@@ -390,14 +391,14 @@
         <div class="bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 border border-gray-700">
             <div class="text-center">
                 <i class="fas fa-check-circle text-green-400 text-5xl mb-4"></i>
-                <h3 class="text-2xl font-bold mb-4">Enregistrer les modifications ?</h3>
-                <p class="text-gray-400 mb-6">Vos paramètres seront mis à jour. Cette action est irréversible.</p>
+                <h3 class="text-2xl font-bold mb-4" data-i18n="modal.save_confirm">Enregistrer les modifications ?</h3>
+                <p class="text-gray-400 mb-6" data-i18n="modal.save_desc">Vos paramètres seront mis à jour. Cette action est irréversible.</p>
                 <div class="flex gap-4">
                     <button onclick="cancelChanges()" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition">
-                        Annuler
+                        <span data-i18n="modal.cancel">Annuler</span>
                     </button>
                     <button onclick="saveChanges()" class="flex-1 discord-btn text-white px-6 py-3 rounded-lg font-medium">
-                        Enregistrer
+                        <span data-i18n="modal.save">Enregistrer</span>
                     </button>
                 </div>
             </div>
@@ -409,10 +410,10 @@
         <div class="bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 border border-gray-700">
             <div class="text-center">
                 <i class="fas fa-check-circle text-green-400 text-5xl mb-4"></i>
-                <h3 class="text-2xl font-bold mb-4">Modifications enregistrées !</h3>
-                <p class="text-gray-400 mb-6">Vos paramètres ont été mis à jour avec succès.</p>
+                <h3 class="text-2xl font-bold mb-4" data-i18n="modal.success">Modifications enregistrées !</h3>
+                <p class="text-gray-400 mb-6" data-i18n="modal.success_desc">Vos paramètres ont été mis à jour avec succès.</p>
                 <button onclick="closeSuccessModal()" class="discord-btn text-white px-8 py-3 rounded-lg font-medium">
-                    Parfait !
+                    <span data-i18n="modal.perfect">Parfait !</span>
                 </button>
             </div>
         </div>
@@ -423,14 +424,14 @@
         <div class="bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 border border-red-800">
             <div class="text-center">
                 <i class="fas fa-exclamation-triangle text-red-400 text-5xl mb-4"></i>
-                <h3 class="text-2xl font-bold mb-4 text-red-400">Supprimer le compte ?</h3>
-                <p class="text-gray-400 mb-6">Cette action est irréversible. Toutes vos données, points et historique seront définitivement supprimés.</p>
+                <h3 class="text-2xl font-bold mb-4 text-red-400" data-i18n="modal.delete_confirm">Supprimer le compte ?</h3>
+                <p class="text-gray-400 mb-6" data-i18n="modal.delete_desc">Cette action est irréversible. Toutes vos données, points et historique seront définitivement supprimés.</p>
                 <div class="flex gap-4">
                     <button onclick="closeDeleteModal()" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition">
-                        Annuler
+                        <span data-i18n="modal.cancel">Annuler</span>
                     </button>
                     <button onclick="deleteAccount()" class="flex-1 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-medium transition">
-                        Supprimer
+                        <span data-i18n="modal.delete">Supprimer</span>
                     </button>
                 </div>
             </div>
