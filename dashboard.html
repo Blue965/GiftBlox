@@ -14,6 +14,8 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="translations.js"></script>
+    <script src="config.js"></script>
+    <script src="api-client.js"></script>
     <script src="settings.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -127,12 +129,16 @@
                             <p class="text-gray-400 text-sm">Membre depuis aujourd'hui</p>
                         </div>
                         <div class="space-y-3">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-400">XP</span>
+                                <span class="text-purple-400" id="profileXP">-</span>
+                            </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-400">Progression du niveau</span>
-                                <span class="text-purple-400">0%</span>
+                                <span class="text-purple-400" id="profileLevelPercent">-</span>
                             </div>
                             <div class="w-full bg-gray-700 rounded-full h-2">
-                                <div class="bg-purple-500 h-2 rounded-full" style="width: 0%"></div>
+                                <div id="profileProgressBar" class="bg-purple-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
@@ -279,40 +285,10 @@
             alert(`Tâche ${taskId} complétée !\n\nLe système vérifiera automatiquement votre progression.`);
         }
 
-        // Charger les statistiques utilisateur depuis l'API du bot
         async function loadUserStats() {
-            try {
-                const user = JSON.parse(localStorage.getItem('discord_user'));
-                if (!user || !user.id) {
-                    console.error('Utilisateur non connecté');
-                    return;
-                }
-
-                // Appeler l'API du bot
-                const response = await fetch(`http://localhost:3001/api/user/${user.id}`);
-                const result = await response.json();
-
-                if (result.success && result.data) {
-                    document.getElementById('userPoints').textContent = result.data.points;
-                    document.getElementById('userLevel').textContent = result.data.level;
-                    document.getElementById('userTasks').textContent = result.data.tasksCompleted;
-                    document.getElementById('userXP').textContent = result.data.xp;
-                } else {
-                    console.error('Erreur lors de la récupération des données:', result.error);
-                    // Afficher des tirets en cas d'erreur
-                    document.getElementById('userPoints').textContent = '-';
-                    document.getElementById('userLevel').textContent = '-';
-                    document.getElementById('userTasks').textContent = '-';
-                    document.getElementById('userXP').textContent = '-';
-                }
-            } catch (error) {
-                console.error('Erreur lors du chargement des statistiques:', error);
-                // Afficher des tirets en cas d'erreur
-                document.getElementById('userPoints').textContent = '-';
-                document.getElementById('userLevel').textContent = '-';
-                document.getElementById('userTasks').textContent = '-';
-                document.getElementById('userXP').textContent = '-';
-            }
+            const user = JSON.parse(localStorage.getItem('discord_user'));
+            if (!user?.id) return;
+            await fetchUserStats(user.id, { updateProfile: true });
         }
 
         // Initialisation
@@ -320,6 +296,8 @@
             if (checkAuth()) {
                 loadTasks();
                 loadUserStats();
+                // Rafraîchir les stats toutes les 30 secondes
+                setInterval(loadUserStats, 30000);
             }
         });
     </script>

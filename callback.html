@@ -13,6 +13,8 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="config.js"></script>
+    <script src="api-client.js"></script>
     <script src="settings.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -59,12 +61,15 @@
                 if (!response.ok) throw new Error('Impossible de charger le profil Discord');
                 return response.json();
             })
-            .then(userData => {
+            .then(async (userData) => {
                 // 3. On sauvegarde le jeton et les vraies données de l'utilisateur en local
                 localStorage.setItem('discord_token', accessToken);
                 localStorage.setItem('discord_user', JSON.stringify(userData));
+
+                // 4. Synchroniser le profil avec la base de données du bot
+                await syncUserOnLogin(userData.id);
                 
-                // 4. Redirection vers votre tableau de bord fonctionnel
+                // 5. Redirection vers le tableau de bord
                 window.location.href = 'dashboard.html';
             })
             .catch(err => {

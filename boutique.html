@@ -14,6 +14,8 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="translations.js"></script>
+    <script src="config.js"></script>
+    <script src="api-client.js"></script>
     <script src="settings.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
@@ -233,8 +235,16 @@
             window.location.href = 'index.html';
         }
 
+        async function loadUserStats() {
+            const user = JSON.parse(localStorage.getItem('discord_user'));
+            if (!user?.id) return;
+            await fetchUserStats(user.id);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            checkAuth();
+            if (checkAuth()) {
+                loadUserStats();
+            }
         });
     </script>
 </body>
