@@ -382,7 +382,7 @@
                                 <span>Paramètres</span>
                                 <i class="fas fa-chevron-right ml-auto text-sm opacity-50"></i>
                             </button>
-                            <button class="w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-medium text-left transition flex items-center">
+                            <button onclick="window.location.href='leaderboard.html'" class="w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-medium text-left transition flex items-center">
                                 <i class="fas fa-trophy mr-3"></i>
                                 <span>Leaderboard</span>
                                 <i class="fas fa-chevron-right ml-auto text-sm opacity-50"></i>
@@ -519,7 +519,75 @@
         async function loadUserStats() {
             const user = JSON.parse(localStorage.getItem('discord_user'));
             if (!user?.id) return;
-            await fetchUserStats(user.id, { updateProfile: true });
+            
+            const stats = await fetchUserStats(user.id, { updateProfile: true });
+            
+            if (stats) {
+                // Update main progress bar
+                const { progressPercentage, xpForNextLevel, xpProgress, xpNeeded } = calculateLevelProgress(stats.level ?? 1, stats.xp ?? 0);
+                document.getElementById('mainProgressBar').style.width = `${progressPercentage}%`;
+                document.getElementById('currentLevelXP').textContent = `${xpProgress} XP`;
+                document.getElementById('nextLevelXP').textContent = `${xpForNextLevel} XP`;
+                document.getElementById('nextLevelInfo').textContent = `Niveau suivant: ${(stats.level ?? 1) + 1}`;
+                
+                // Update activity chart with real data
+                updateActivityChart(stats);
+                
+                // Update recent activity with real data
+                updateRecentActivity(stats);
+                
+                // Update badges with real data
+                updateBadges(stats);
+            }
+        }
+
+        // Update activity chart with real data
+        function updateActivityChart(stats) {
+            if (!stats.weeklyActivity) return;
+            
+            const ctx = document.getElementById('activityChart');
+            if (!ctx) return;
+            
+            const chart = Chart.getChart(ctx);
+            if (chart) {
+                chart.data.datasets[0].data = stats.weeklyActivity.points || [];
+                chart.data.datasets[1].data = stats.weeklyActivity.xp || [];
+                chart.update();
+            }
+        }
+
+        // Update recent activity with real data
+        function updateRecentActivity(stats) {
+            if (!stats.recentActivity) return;
+            
+            const activityContainer = document.querySelector('.space-y-4'); // Recent activity container
+            if (!activityContainer) return;
+            
+            activityContainer.innerHTML = stats.recentActivity.map(activity => `
+                <div class="flex items-center space-x-4 p-3 bg-gray-800/50 rounded-lg">
+                    <div class="w-10 h-10 bg-${activity.type === 'task' ? 'green' : activity.type === 'level' ? 'purple' : 'blue'}-500/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-${activity.type === 'task' ? 'check' : activity.type === 'level' ? 'level-up-alt' : 'gift'} text-${activity.type === 'task' ? 'green' : activity.type === 'level' ? 'purple' : 'blue'}-400"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">${activity.title}</p>
+                        <p class="text-gray-400 text-xs">${activity.description}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update badges with real data
+        function updateBadges(stats) {
+            if (!stats.badges) return;
+            
+            const badgesContainer = document.querySelector('.grid.grid-cols-4');
+            if (!badgesContainer) return;
+            
+            badgesContainer.innerHTML = stats.badges.map(badge => `
+                <div class="w-12 h-12 bg-${badge.color}-500/20 rounded-lg flex items-center justify-center border border-${badge.color}-500/30 ${badge.unlocked ? '' : 'opacity-50'}" title="${badge.name}">
+                    <i class="fas fa-${badge.icon} text-${badge.color}-400"></i>
+                </div>
+            `).join('');
         }
 
         // Initialiser le graphique d'activité

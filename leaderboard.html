@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - GiftBlox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="translations.js"></script>
+    <script src="config.js"></script>
+    <script src="api-client.js"></script>
+    <script src="settings.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        h1, h2, h3, .stat-number {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            position: relative;
+        }
+        
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23ffffff" fill-opacity="0.02" width="100" height="100"/></svg>');
+            pointer-events: none;
+        }
+        
+        .card-gradient {
+            background: linear-gradient(145deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .discord-btn {
+            background: linear-gradient(135deg, #5865F2 0%, #7289da 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .discord-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(88, 101, 242, 0.3);
+        }
+        
+        .rank-card {
+            transition: all 0.3s ease;
+        }
+        
+        .rank-card:hover {
+            transform: translateX(5px);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+        
+        .gold-badge {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #1a1a2e;
+        }
+        
+        .silver-badge {
+            background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+            color: #1a1a2e;
+        }
+        
+        .bronze-badge {
+            background: linear-gradient(135deg, #cd7f32, #e6a86c);
+            color: #1a1a2e;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-gift text-purple-500 text-2xl mr-2"></i>
+                    <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">GiftBlox</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <img id="userAvatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar" class="w-8 h-8 rounded-full mr-2">
+                        <span id="userName" class="text-gray-300">Utilisateur</span>
+                    </div>
+                    <button onclick="logout()" class="text-gray-300 hover:text-white transition">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Leaderboard Content -->
+    <div class="pt-20 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-2">Leaderboard</h1>
+                <p class="text-gray-400">Les meilleurs utilisateurs de GiftBlox</p>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="card-gradient rounded-xl p-6 border border-gray-800 text-center">
+                    <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-trophy text-yellow-400 text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold mb-1" id="totalUsers">-</div>
+                    <div class="text-gray-400 text-sm">Utilisateurs Totaux</div>
+                </div>
+                
+                <div class="card-gradient rounded-xl p-6 border border-gray-800 text-center">
+                    <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-coins text-purple-400 text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold mb-1" id="totalPoints">-</div>
+                    <div class="text-gray-400 text-sm">Points Distribués</div>
+                </div>
+                
+                <div class="card-gradient rounded-xl p-6 border border-gray-800 text-center">
+                    <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-level-up-alt text-green-400 text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold mb-1" id="avgLevel">-</div>
+                    <div class="text-gray-400 text-sm">Niveau Moyen</div>
+                </div>
+            </div>
+
+            <!-- Top 3 Podium -->
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <!-- 2nd Place -->
+                <div class="card-gradient rounded-xl p-6 border border-gray-800 text-center order-2 md:order-1 mt-8">
+                    <div class="w-20 h-20 bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-gray-400">
+                        <span class="text-3xl font-bold text-gray-300">2</span>
+                    </div>
+                    <img id="secondAvatar" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="2nd" class="w-16 h-16 rounded-full mx-auto mb-3 border-2 border-gray-400">
+                    <h3 id="secondName" class="text-xl font-bold mb-1">-</h3>
+                    <p class="text-gray-400 text-sm mb-2" id="secondPoints">- points</p>
+                    <span class="silver-badge px-3 py-1 rounded-full text-sm font-bold">2ème</span>
+                </div>
+
+                <!-- 1st Place -->
+                <div class="card-gradient rounded-xl p-6 border border-yellow-500/30 text-center order-1 md:order-2 glow-effect">
+                    <div class="w-24 h-24 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-yellow-500">
+                        <i class="fas fa-crown text-yellow-400 text-3xl"></i>
+                    </div>
+                    <img id="firstAvatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="1st" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-yellow-500">
+                    <h3 id="firstName" class="text-2xl font-bold mb-1">-</h3>
+                    <p class="text-gray-400 text-sm mb-2" id="firstPoints">- points</p>
+                    <span class="gold-badge px-4 py-1 rounded-full text-sm font-bold">1er</span>
+                </div>
+
+                <!-- 3rd Place -->
+                <div class="card-gradient rounded-xl p-6 border border-gray-800 text-center order-3 md:order-3 mt-8">
+                    <div class="w-20 h-20 bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-orange-600">
+                        <span class="text-3xl font-bold text-orange-400">3</span>
+                    </div>
+                    <img id="thirdAvatar" src="https://cdn.discordapp.com/embed/avatars/2.png" alt="3rd" class="w-16 h-16 rounded-full mx-auto mb-3 border-2 border-orange-600">
+                    <h3 id="thirdName" class="text-xl font-bold mb-1">-</h3>
+                    <p class="text-gray-400 text-sm mb-2" id="thirdPoints">- points</p>
+                    <span class="bronze-badge px-3 py-1 rounded-full text-sm font-bold">3ème</span>
+                </div>
+            </div>
+
+            <!-- Full Leaderboard -->
+            <div class="card-gradient rounded-xl p-6 border border-gray-800">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold">Classement Complet</h2>
+                    <select id="leaderboardFilter" class="bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500">
+                        <option value="points">Par Points</option>
+                        <option value="level">Par Niveau</option>
+                        <option value="xp">Par XP</option>
+                    </select>
+                </div>
+                <div id="leaderboardList" class="space-y-3">
+                    <!-- Leaderboard entries will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vérifier si l'utilisateur est connecté
+        function checkAuth() {
+            const token = localStorage.getItem('discord_token');
+            const user = localStorage.getItem('discord_user');
+            
+            if (!token || !user) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            
+            const userData = JSON.parse(user);
+            updateUI(userData);
+            return true;
+        }
+
+        // Mettre à jour l'interface avec les données utilisateur
+        function updateUI(user) {
+            const avatarUrl = user.avatar 
+                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+                : `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png`;
+            
+            document.getElementById('userAvatar').src = avatarUrl;
+            document.getElementById('userName').textContent = user.username;
+        }
+
+        // Déconnexion
+        function logout() {
+            localStorage.removeItem('discord_token');
+            localStorage.removeItem('discord_user');
+            window.location.href = 'index.html';
+        }
+
+        // Charger le leaderboard depuis l'API
+        async function loadLeaderboard() {
+            try {
+                const response = await fetch(`${window.GIFTBLOX_CONFIG.apiBaseUrl}/api/leaderboard`);
+                if (!response.ok) throw new Error('Erreur lors du chargement du leaderboard');
+                
+                const data = await response.json();
+                updateLeaderboardUI(data);
+            } catch (error) {
+                console.error('Erreur lors du chargement du leaderboard:', error);
+                // Données fictives en cas d'erreur
+                loadMockLeaderboard();
+            }
+        }
+
+        // Mettre à jour l'interface du leaderboard
+        function updateLeaderboardUI(data) {
+            // Stats globales
+            document.getElementById('totalUsers').textContent = data.totalUsers || '-';
+            document.getElementById('totalPoints').textContent = (data.totalPoints || 0).toLocaleString();
+            document.getElementById('avgLevel').textContent = (data.avgLevel || 0).toFixed(1);
+
+            // Top 3
+            if (data.topUsers && data.topUsers.length >= 3) {
+                updateTopUser(data.topUsers[0], 'first');
+                updateTopUser(data.topUsers[1], 'second');
+                updateTopUser(data.topUsers[2], 'third');
+            }
+
+            // Liste complète
+            if (data.allUsers) {
+                renderLeaderboardList(data.allUsers);
+            }
+        }
+
+        // Mettre à jour un utilisateur du top 3
+        function updateTopUser(user, prefix) {
+            const avatarUrl = user.avatar 
+                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+                : `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png`;
+            
+            document.getElementById(`${prefix}Avatar`).src = avatarUrl;
+            document.getElementById(`${prefix}Name`).textContent = user.username;
+            document.getElementById(`${prefix}Points`).textContent = `${user.points?.toLocaleString() || 0} points`;
+        }
+
+        // Rendre la liste complète du leaderboard
+        function renderLeaderboardList(users) {
+            const list = document.getElementById('leaderboardList');
+            const currentUser = JSON.parse(localStorage.getItem('discord_user'));
+            
+            list.innerHTML = users.map((user, index) => {
+                const avatarUrl = user.avatar 
+                    ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+                    : `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png`;
+                
+                const isCurrentUser = currentUser && user.id === currentUser.id;
+                
+                return `
+                    <div class="rank-card bg-gray-800/50 rounded-lg p-4 border border-gray-700 ${isCurrentUser ? 'border-purple-500 glow-effect' : ''} flex items-center animate-fade-in" style="animation-delay: ${index * 0.05}s">
+                        <div class="w-10 h-10 flex items-center justify-center mr-4">
+                            <span class="text-lg font-bold ${index < 3 ? 'text-yellow-400' : 'text-gray-400'}">#${index + 1}</span>
+                        </div>
+                        <img src="${avatarUrl}" alt="${user.username}" class="w-12 h-12 rounded-full mr-4 border-2 border-gray-600">
+                        <div class="flex-1">
+                            <h4 class="font-semibold">${user.username}</h4>
+                            <p class="text-gray-400 text-sm">Niveau ${user.level || 0}</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-purple-400 font-bold">${user.points?.toLocaleString() || 0}</div>
+                            <div class="text-gray-400 text-sm">points</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Données fictives pour la démonstration
+        function loadMockLeaderboard() {
+            const mockData = {
+                totalUsers: 1234,
+                totalPoints: 456789,
+                avgLevel: 15.5,
+                topUsers: [
+                    { id: '1', username: 'TopPlayer1', points: 15000, level: 25, avatar: null },
+                    { id: '2', username: 'ProGamer', points: 12500, level: 22, avatar: null },
+                    { id: '3', username: 'GiftMaster', points: 10000, level: 20, avatar: null }
+                ],
+                allUsers: [
+                    { id: '1', username: 'TopPlayer1', points: 15000, level: 25, avatar: null },
+                    { id: '2', username: 'ProGamer', points: 12500, level: 22, avatar: null },
+                    { id: '3', username: 'GiftMaster', points: 10000, level: 20, avatar: null },
+                    { id: '4', username: 'ActiveUser', points: 8500, level: 18, avatar: null },
+                    { id: '5', username: 'PointHunter', points: 7200, level: 16, avatar: null },
+                    { id: '6', username: 'TaskMaster', points: 6500, level: 15, avatar: null },
+                    { id: '7', username: 'DailyGrinder', points: 5800, level: 14, avatar: null },
+                    { id: '8', username: 'XPSeeker', points: 5200, level: 13, avatar: null },
+                    { id: '9', username: 'LevelClimber', points: 4800, level: 12, avatar: null },
+                    { id: '10', username: 'GiftBloxFan', points: 4200, level: 11, avatar: null }
+                ]
+            };
+            
+            updateLeaderboardUI(mockData);
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            if (checkAuth()) {
+                loadLeaderboard();
+            }
+        });
+    </script>
+</body>
+</html>
