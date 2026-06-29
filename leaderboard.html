@@ -253,8 +253,8 @@
                 updateLeaderboardUI(data);
             } catch (error) {
                 console.error('Erreur lors du chargement du leaderboard:', error);
-                // Données fictives en cas d'erreur
-                loadMockLeaderboard();
+                // Afficher un message d'erreur au lieu de données fictives
+                showLeaderboardError();
             }
         }
 
@@ -320,32 +320,20 @@
             }).join('');
         }
 
-        // Données fictives pour la démonstration
-        function loadMockLeaderboard() {
-            const mockData = {
-                totalUsers: 1234,
-                totalPoints: 456789,
-                avgLevel: 15.5,
-                topUsers: [
-                    { id: '1', username: 'TopPlayer1', points: 15000, level: 25, avatar: null },
-                    { id: '2', username: 'ProGamer', points: 12500, level: 22, avatar: null },
-                    { id: '3', username: 'GiftMaster', points: 10000, level: 20, avatar: null }
-                ],
-                allUsers: [
-                    { id: '1', username: 'TopPlayer1', points: 15000, level: 25, avatar: null },
-                    { id: '2', username: 'ProGamer', points: 12500, level: 22, avatar: null },
-                    { id: '3', username: 'GiftMaster', points: 10000, level: 20, avatar: null },
-                    { id: '4', username: 'ActiveUser', points: 8500, level: 18, avatar: null },
-                    { id: '5', username: 'PointHunter', points: 7200, level: 16, avatar: null },
-                    { id: '6', username: 'TaskMaster', points: 6500, level: 15, avatar: null },
-                    { id: '7', username: 'DailyGrinder', points: 5800, level: 14, avatar: null },
-                    { id: '8', username: 'XPSeeker', points: 5200, level: 13, avatar: null },
-                    { id: '9', username: 'LevelClimber', points: 4800, level: 12, avatar: null },
-                    { id: '10', username: 'GiftBloxFan', points: 4200, level: 11, avatar: null }
-                ]
-            };
+        // Afficher un message d'erreur si l'API ne répond pas
+        function showLeaderboardError() {
+            document.getElementById('totalUsers').textContent = 'Erreur';
+            document.getElementById('totalPoints').textContent = 'Erreur';
+            document.getElementById('avgLevel').textContent = 'Erreur';
             
-            updateLeaderboardUI(mockData);
+            const list = document.getElementById('leaderboardList');
+            list.innerHTML = `
+                <div class="text-center py-8">
+                    <i class="fas fa-exclamation-triangle text-yellow-400 text-4xl mb-4"></i>
+                    <p class="text-gray-400">Impossible de charger le leaderboard</p>
+                    <p class="text-gray-500 text-sm mt-2">Vérifiez que l'API est accessible</p>
+                </div>
+            `;
         }
 
         // Initialisation
