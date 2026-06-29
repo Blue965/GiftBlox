@@ -13,23 +13,124 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="translations.js"></script>
     <script src="config.js"></script>
     <script src="api-client.js"></script>
     <script src="settings.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
         
         * {
             font-family: 'Poppins', sans-serif;
         }
         
+        h1, h2, h3, .stat-number {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
         .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            position: relative;
+        }
+        
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23ffffff" fill-opacity="0.02" width="100" height="100"/></svg>');
+            pointer-events: none;
         }
         
         .card-gradient {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            background: linear-gradient(145deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .discord-btn {
+            background: linear-gradient(135deg, #5865F2 0%, #7289da 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .discord-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(88, 101, 242, 0.3);
+        }
+        
+        .stat-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .stat-card:hover::before {
+            left: 100%;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+        }
+        
+        .task-card {
+            transition: all 0.3s ease;
+        }
+        
+        .task-card:hover {
+            transform: translateX(5px);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #8b5cf6, #6366f1);
+            transition: width 1s ease-in-out;
+        }
+        
+        .badge {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .notification-dot {
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -66,44 +167,85 @@
 
             <!-- Stats Cards -->
             <div class="grid md:grid-cols-4 gap-6 mb-8">
-                <div class="card-gradient rounded-xl p-6 border border-gray-800">
+                <div class="stat-card card-gradient rounded-xl p-6 border border-gray-800">
                     <div class="flex items-center justify-between mb-4">
                         <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
                             <i class="fas fa-coins text-purple-400 text-xl"></i>
                         </div>
+                        <div class="text-green-400 text-sm">
+                            <i class="fas fa-arrow-up"></i> +12%
+                        </div>
                     </div>
-                    <div class="text-3xl font-bold mb-1" id="userPoints">-</div>
+                    <div class="stat-number text-3xl font-bold mb-1" id="userPoints">-</div>
                     <div class="text-gray-400 text-sm">Points</div>
                 </div>
-                
-                <div class="card-gradient rounded-xl p-6 border border-gray-800">
+
+                <div class="stat-card card-gradient rounded-xl p-6 border border-gray-800">
                     <div class="flex items-center justify-between mb-4">
                         <div class="w-12 h-12 bg-pink-500/20 rounded-lg flex items-center justify-center">
                             <i class="fas fa-level-up-alt text-pink-400 text-xl"></i>
                         </div>
+                        <div class="text-green-400 text-sm">
+                            <i class="fas fa-arrow-up"></i> +2
+                        </div>
                     </div>
-                    <div class="text-3xl font-bold mb-1" id="userLevel">-</div>
+                    <div class="stat-number text-3xl font-bold mb-1" id="userLevel">-</div>
                     <div class="text-gray-400 text-sm">Niveau</div>
                 </div>
-                
-                <div class="card-gradient rounded-xl p-6 border border-gray-800">
+
+                <div class="stat-card card-gradient rounded-xl p-6 border border-gray-800">
                     <div class="flex items-center justify-between mb-4">
                         <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
                             <i class="fas fa-tasks text-blue-400 text-xl"></i>
                         </div>
+                        <div class="text-green-400 text-sm">
+                            <i class="fas fa-arrow-up"></i> +5
+                        </div>
                     </div>
-                    <div class="text-3xl font-bold mb-1" id="userTasks">-</div>
+                    <div class="stat-number text-3xl font-bold mb-1" id="userTasks">-</div>
                     <div class="text-gray-400 text-sm">Tâches Complétées</div>
                 </div>
-                
-                <div class="card-gradient rounded-xl p-6 border border-gray-800">
+
+                <div class="stat-card card-gradient rounded-xl p-6 border border-gray-800">
                     <div class="flex items-center justify-between mb-4">
                         <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
                             <i class="fas fa-star text-green-400 text-xl"></i>
                         </div>
+                        <div class="text-yellow-400 text-sm badge">
+                            <i class="fas fa-crown"></i> Top 10%
+                        </div>
                     </div>
-                    <div class="text-3xl font-bold mb-1" id="userXP">-</div>
-                    <div class="text-gray-400 text-sm">XP</div>
+                    <div class="stat-number text-3xl font-bold mb-1" id="userXP">-</div>
+                    <div class="text-gray-400 text-sm">XP Total</div>
+                </div>
+            </div>
+
+            <!-- Level Progress -->
+            <div class="card-gradient rounded-xl p-6 border border-gray-800 mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold">Progression vers le niveau suivant</h2>
+                    <span class="text-purple-400 text-sm" id="nextLevelInfo">Niveau suivant: 11</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-4 mb-2">
+                    <div id="mainProgressBar" class="progress-bar h-4 rounded-full glow-effect" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-sm text-gray-400">
+                    <span id="currentLevelXP">0 XP</span>
+                    <span id="nextLevelXP">1000 XP</span>
+                </div>
+            </div>
+
+            <!-- Activity Chart -->
+            <div class="card-gradient rounded-xl p-6 border border-gray-800 mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold">Activité des 7 derniers jours</h2>
+                    <div class="flex space-x-2">
+                        <span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-xs">Points</span>
+                        <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs">XP</span>
+                    </div>
+                </div>
+                <div class="h-64">
+                    <canvas id="activityChart"></canvas>
                 </div>
             </div>
 
@@ -111,10 +253,50 @@
             <div class="grid lg:grid-cols-3 gap-8">
                 <!-- Available Tasks -->
                 <div class="lg:col-span-2">
-                    <div class="card-gradient rounded-xl p-6 border border-gray-800">
-                        <h2 class="text-xl font-bold mb-6">Tâches Disponibles</h2>
+                    <div class="card-gradient rounded-xl p-6 border border-gray-800 mb-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-xl font-bold">Tâches Disponibles</h2>
+                            <span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm">3 tâches</span>
+                        </div>
                         <div id="tasksList" class="space-y-4">
                             <!-- Tasks will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card-gradient rounded-xl p-6 border border-gray-800">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-xl font-bold">Activité Récente</h2>
+                            <button class="text-purple-400 text-sm hover:underline">Voir tout</button>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4 p-3 bg-gray-800/50 rounded-lg">
+                                <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-green-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium">Tâche complétée</p>
+                                    <p class="text-gray-400 text-xs">+50 points • Il y a 2 heures</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4 p-3 bg-gray-800/50 rounded-lg">
+                                <div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-level-up-alt text-purple-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium">Niveau supérieur</p>
+                                    <p class="text-gray-400 text-xs">Niveau 10 atteint • Il y a 1 jour</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4 p-3 bg-gray-800/50 rounded-lg">
+                                <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-gift text-blue-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium">Récompense reçue</p>
+                                    <p class="text-gray-400 text-xs">Badge "Débutant" • Il y a 3 jours</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,21 +306,59 @@
                     <div class="card-gradient rounded-xl p-6 border border-gray-800 mb-6">
                         <h2 class="text-xl font-bold mb-6">Votre Profil</h2>
                         <div class="text-center mb-6">
-                            <img id="profileAvatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar" class="w-24 h-24 rounded-full mx-auto mb-4">
+                            <div class="relative inline-block">
+                                <img id="profileAvatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-purple-500/30">
+                                <div class="absolute bottom-0 right-0 w-8 h-8 bg-green-500 rounded-full border-4 border-gray-900 flex items-center justify-center">
+                                    <i class="fas fa-check text-white text-xs"></i>
+                                </div>
+                            </div>
                             <h3 id="profileName" class="text-xl font-bold">Utilisateur</h3>
                             <p class="text-gray-400 text-sm">Membre depuis aujourd'hui</p>
+                            <div class="flex justify-center space-x-2 mt-3">
+                                <span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-xs">VIP</span>
+                                <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs">Premium</span>
+                            </div>
                         </div>
                         <div class="space-y-3">
                             <div class="flex justify-between items-center text-sm">
-                                <span class="text-gray-400">XP</span>
+                                <span class="text-gray-400">XP Total</span>
                                 <span class="text-purple-400" id="profileXP">-</span>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-400">Progression du niveau</span>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-400">Rang</span>
+                                <span class="text-yellow-400">#42</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-400">Progression</span>
                                 <span class="text-purple-400" id="profileLevelPercent">-</span>
                             </div>
                             <div class="w-full bg-gray-700 rounded-full h-2">
-                                <div id="profileProgressBar" class="bg-purple-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                                <div id="profileProgressBar" class="progress-bar h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Achievements -->
+                    <div class="card-gradient rounded-xl p-6 border border-gray-800 mb-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-xl font-bold">Badges</h2>
+                            <span class="text-gray-400 text-sm">5/20</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-3">
+                            <div class="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center border border-yellow-500/30" title="Débutant">
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center border border-purple-500/30" title="Première tâche">
+                                <i class="fas fa-tasks text-purple-400"></i>
+                            </div>
+                            <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center border border-green-500/30" title="Actif">
+                                <i class="fas fa-fire text-green-400"></i>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center border border-blue-500/30" title="Social">
+                                <i class="fas fa-users text-blue-400"></i>
+                            </div>
+                            <div class="w-12 h-12 bg-gray-700/50 rounded-lg flex items-center justify-center border border-gray-600/30 opacity-50" title="Verrouillé">
+                                <i class="fas fa-lock text-gray-500"></i>
                             </div>
                         </div>
                     </div>
@@ -147,14 +367,25 @@
                     <div class="card-gradient rounded-xl p-6 border border-gray-800">
                         <h2 class="text-xl font-bold mb-6">Actions Rapides</h2>
                         <div class="space-y-3">
-                            <button onclick="window.location.href='boutique.html'" class="w-full discord-btn text-white px-4 py-3 rounded-lg font-medium text-left">
-                                <i class="fas fa-store mr-2"></i>Voir la Boutique
+                            <button onclick="window.location.href='boutique.html'" class="w-full discord-btn text-white px-4 py-3 rounded-lg font-medium text-left flex items-center">
+                                <i class="fas fa-store mr-3"></i>
+                                <span>Voir la Boutique</span>
+                                <i class="fas fa-chevron-right ml-auto text-sm opacity-50"></i>
                             </button>
-                            <button onclick="window.location.href='historique.html'" class="w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-medium text-left transition">
-                                <i class="fas fa-history mr-2"></i>Historique
+                            <button onclick="window.location.href='historique.html'" class="w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-medium text-left transition flex items-center">
+                                <i class="fas fa-history mr-3"></i>
+                                <span>Historique</span>
+                                <i class="fas fa-chevron-right ml-auto text-sm opacity-50"></i>
                             </button>
-                            <button onclick="window.location.href='parametres.html'" class="w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-medium text-left transition">
-                                <i class="fas fa-cog mr-2"></i>Paramètres
+                            <button onclick="window.location.href='parametres.html'" class="w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-medium text-left transition flex items-center">
+                                <i class="fas fa-cog mr-3"></i>
+                                <span>Paramètres</span>
+                                <i class="fas fa-chevron-right ml-auto text-sm opacity-50"></i>
+                            </button>
+                            <button class="w-full bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-medium text-left transition flex items-center">
+                                <i class="fas fa-trophy mr-3"></i>
+                                <span>Leaderboard</span>
+                                <i class="fas fa-chevron-right ml-auto text-sm opacity-50"></i>
                             </button>
                         </div>
                     </div>
@@ -233,33 +464,33 @@
 
             const tasksList = document.getElementById('tasksList');
             tasksList.innerHTML = tasks.map(task => `
-                <div class="bg-gray-800 rounded-lg p-4 border border-gray-700 hover:border-purple-500 transition">
+                <div class="task-card bg-gray-800/50 rounded-lg p-4 border border-gray-700 hover:border-purple-500 transition animate-fade-in">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <div class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center mr-4">
-                                <i class="fas fa-${task.type === 'social' ? 'share-alt' : task.type === 'invitation' ? 'user-plus' : 'comment'} text-purple-400"></i>
+                            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-${task.type === 'social' ? 'share-alt' : task.type === 'invitation' ? 'user-plus' : 'comment'} text-purple-400 text-lg"></i>
                             </div>
                             <div>
-                                <h4 class="font-semibold">${task.name}</h4>
+                                <h4 class="font-semibold text-lg">${task.name}</h4>
                                 <p class="text-gray-400 text-sm">${task.description}</p>
-                                ${task.link ? `<a href="${task.link}" target="_blank" class="text-purple-400 text-xs hover:underline mt-1 block">🔗 ${task.link}</a>` : ''}
+                                ${task.link ? `<a href="${task.link}" target="_blank" class="text-purple-400 text-xs hover:underline mt-1 block flex items-center"><i class="fas fa-external-link-alt mr-1"></i> Lien externe</a>` : ''}
                             </div>
                         </div>
                         <div class="text-right">
-                            <div class="text-purple-400 font-bold">+${task.reward}</div>
+                            <div class="text-purple-400 font-bold text-xl">+${task.reward}</div>
                             <div class="text-gray-400 text-sm">points</div>
                         </div>
                     </div>
                     ${task.requiresProof ? `
-                        <div class="mt-3 space-y-2">
-                            <input type="text" id="proof_${task.id}" placeholder="URL de la preuve (screenshot)" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-purple-500">
-                            <button onclick="completeTaskWithProof(${task.id})" class="w-full discord-btn text-white px-4 py-2 rounded-lg font-medium text-sm">
+                        <div class="mt-4 space-y-3">
+                            <input type="text" id="proof_${task.id}" placeholder="URL de la preuve (screenshot)" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 transition">
+                            <button onclick="completeTaskWithProof(${task.id})" class="w-full discord-btn text-white px-4 py-3 rounded-lg font-medium text-sm flex items-center justify-center">
                                 <i class="fas fa-check mr-2"></i>Compléter avec preuve
                             </button>
                         </div>
                     ` : `
-                        <button onclick="completeTask(${task.id})" class="w-full mt-3 discord-btn text-white px-4 py-2 rounded-lg font-medium text-sm">
-                            Compléter cette tâche
+                        <button onclick="completeTask(${task.id})" class="w-full mt-4 discord-btn text-white px-4 py-3 rounded-lg font-medium text-sm flex items-center justify-center">
+                            <i class="fas fa-play mr-2"></i>Compléter cette tâche
                         </button>
                     `}
                 </div>
@@ -291,11 +522,122 @@
             await fetchUserStats(user.id, { updateProfile: true });
         }
 
+        // Initialiser le graphique d'activité
+        function initActivityChart() {
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            
+            // Données fictives pour la démonstration (avec des pics)
+            const labels = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+            const pointsData = [45, 120, 85, 200, 150, 280, 95];
+            const xpData = [30, 90, 60, 150, 110, 220, 70];
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Points',
+                            data: pointsData,
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#8b5cf6',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'XP',
+                            data: xpData,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#3b82f6',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: '#9ca3af',
+                                font: {
+                                    family: 'Poppins',
+                                    size: 12
+                                },
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                            titleColor: '#fff',
+                            bodyColor: '#9ca3af',
+                            borderColor: '#8b5cf6',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(75, 85, 99, 0.3)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#9ca3af',
+                                font: {
+                                    family: 'Poppins'
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(75, 85, 99, 0.3)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#9ca3af',
+                                font: {
+                                    family: 'Poppins'
+                                }
+                            },
+                            beginAtZero: true
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        }
+
         // Initialisation
         document.addEventListener('DOMContentLoaded', () => {
             if (checkAuth()) {
                 loadTasks();
                 loadUserStats();
+                initActivityChart();
                 // Rafraîchir les stats toutes les 30 secondes
                 setInterval(loadUserStats, 30000);
             }

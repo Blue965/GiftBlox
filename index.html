@@ -14,6 +14,7 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="config.js"></script>
     <script src="translations.js"></script>
     <script src="settings.js"></script>
     <style>
@@ -384,6 +385,10 @@
                 <i class="fab fa-discord text-6xl text-purple-400 mb-4"></i>
                 <h3 class="text-2xl font-bold mb-4">Connexion avec Discord</h3>
                 <p class="text-gray-400 mb-6">Connectez-vous pour accéder au tableau de bord et ajouter le bot à votre serveur.</p>
+                
+                <!-- Cloudflare Turnstile Widget -->
+                <div class="cf-turnstile mb-6" id="turnstileWidget"></div>
+                
                 <button onclick="loginWithDiscord()" class="discord-btn text-white px-8 py-3 rounded-full font-semibold w-full">
                     <i class="fab fa-discord mr-2"></i>Se connecter avec Discord
                 </button>
@@ -392,6 +397,22 @@
         </div>
     </div>
 
+    <!-- Cloudflare Turnstile Script -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    
+    <script>
+        // Initialize Turnstile with site key from .env
+        document.addEventListener('DOMContentLoaded', () => {
+            const widget = document.getElementById('turnstileWidget');
+            if (widget) {
+                turnstile.render('#turnstileWidget', {
+                    sitekey: '0x4AAAAAADsk4CsDZxXlTYDw',
+                    theme: 'dark'
+                });
+            }
+        });
+    </script>
+    
     <script src="script.js"></script>
 </body>
 </html>

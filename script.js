@@ -31,7 +31,14 @@ function loginWithDiscord() {
         alert('Veuillez configurer votre Discord Client ID dans le fichier script.js');
         return;
     }
-    
+
+    // Vérifier Turnstile
+    const turnstileResponse = turnstile.getResponse();
+    if (!turnstileResponse) {
+        alert('Veuillez compléter la vérification de sécurité.');
+        return;
+    }
+
     // Rediriger vers Discord OAuth2
     window.location.href = DISCORD_AUTH_URL;
 }
