@@ -10,5 +10,5 @@
 //   apiBaseUrl: 'https://giftblox.kdns.fr'
 //   apiBaseUrl: 'http://173.45.67.89:25565'
 window.GIFTBLOX_CONFIG = {
-    apiBaseUrl: 'https://nexusglobal.com:20188'
+    apiBaseUrl: 'http://145.239.65.119:20188'
 };
