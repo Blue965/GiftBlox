@@ -1,0 +1,19 @@
+{
+  "name": "giftblox",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "start:bot": "node index.js",
+    "start:api": "node api.js",
+    "start": "concurrently \"npm run start:bot\" \"npm run start:api\""
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "sql.js": "^1.10.2",
+    "groq-sdk": "^0.3.1",
+    "concurrently": "^8.2.2"
+  }
+}

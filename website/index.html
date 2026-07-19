@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GiftBlox</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+*{font-family:'Rajdhani',sans-serif}h1{font-family:'Orbitron',sans-serif}body{background:#030303;color:#fff;overflow-x:hidden}
+.glow{text-shadow:0 0 20px rgba(139,92,246,.3)}.glass{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(20px)}
+.btn-primary{background:linear-gradient(135deg,#8b5cf6,#ec4899);transition:all .3s}.btn-primary:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(139,92,246,.4)}
+</style>
+</head>
+<body>
+<nav class="fixed top-0 w-full z-50 glass">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center"><span class="text-white font-black text-sm">G</span></div>
+      <span class="font-black text-lg tracking-tighter">GiftBlox</span>
+    </div>
+    <div class="hidden md:flex items-center space-x-8 text-sm font-bold uppercase tracking-widest">
+      <a href="#features" class="hover:text-purple-400 transition">Fonctionnalités</a>
+      <a href="#how-it-works" class="hover:text-purple-400 transition">Processus</a>
+    </div>
+    <button onclick="login()" class="btn-primary px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-tighter"><i class="fab fa-discord mr-2"></i>Connexion</button>
+  </div>
+</nav>
+
+<section class="relative pt-48 pb-32 min-h-screen flex items-center justify-center">
+  <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[120px] -z-10"></div>
+  <div class="text-center max-w-3xl mx-auto px-6">
+    <h1 class="text-6xl md:text-8xl font-black tracking-tighter glow mb-6">GIFT<span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">BLOX</span></h1>
+    <p class="text-gray-400 text-lg md:text-xl font-medium mb-10">L'écosystème de fidélité Discord n°1</p>
+    <button onclick="login()" class="btn-primary px-10 py-4 rounded-full text-sm font-black uppercase tracking-widest"><i class="fab fa-discord mr-3"></i>Connexion avec Discord</button>
+  </div>
+</section>
+
+<section id="features" class="py-32 px-6">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-4xl font-black text-center mb-16">Pourquoi <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">GiftBlox</span> ?</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="glass rounded-3xl p-8 text-center"><div class="w-16 h-16 rounded-2xl bg-purple-600/20 flex items-center justify-center mx-auto mb-6"><i class="fas fa-bolt text-2xl text-purple-400"></i></div><h3 class="font-black text-lg mb-3">Performance</h3><p class="text-gray-400 font-medium">Bot ultra-rapide avec 0 latence</p></div>
+      <div class="glass rounded-3xl p-8 text-center"><div class="w-16 h-16 rounded-2xl bg-pink-600/20 flex items-center justify-center mx-auto mb-6"><i class="fas fa-shield text-2xl text-pink-400"></i></div><h3 class="font-black text-lg mb-3">Sécurité</h3><p class="text-gray-400 font-medium">Données chiffrées et sécurisées</p></div>
+      <div class="glass rounded-3xl p-8 text-center"><div class="w-16 h-16 rounded-2xl bg-purple-600/20 flex items-center justify-center mx-auto mb-6"><i class="fas fa-crown text-2xl text-purple-400"></i></div><h3 class="font-black text-lg mb-3">Premium</h3><p class="text-gray-400 font-medium">Dashboard complet avec analytics</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+const CLIENT_ID = '1513281082626281472';
+const REDIRECT = 'https://giftblox-ten.vercel.app/callback.html';
+function login(){
+  let p = new URLSearchParams({client_id:CLIENT_ID,redirect_uri:REDIRECT,response_type:'token',scope:'identify email'});
+  window.location.href = 'https://discord.com/api/oauth2/authorize?' + p.toString();
+}
+// Redirect if already logged in
+let u = localStorage.getItem('discord_user');
+if(u) window.location.href = 'dashboard.html';
+</script>
+</body>
+</html>
