@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://badness-rockiness-delouse.ngrok-free.dev/api/$1" },
+    { "source": "/dashboard.html", "destination": "/dashboard.html" },
+    { "source": "/callback.html", "destination": "/callback.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
